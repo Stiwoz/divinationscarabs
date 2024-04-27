@@ -35,6 +35,8 @@ jobs:
       - uses: bahmutov/npm-install@v1
         with:
           working-directory: ./App
+      
+      - run: cat /home/runner/.npm/_logs/*-debug-0.log
 
       - name: Build React app
         run: npm run build
@@ -92,4 +94,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          script: cd ${{ secrets.PATH }} && python priceValueLP.py && python priceValueLP.py standard
+          script: cd ${{ secrets.PATH }} && python3 priceValueLP.py && python3 priceValueLP.py standard
