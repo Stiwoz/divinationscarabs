@@ -41,7 +41,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           server: ${{ secrets.HOST }}
           ssh_private_key: ${{ secrets.SSH_KEY }}
-          local_path: './build/*'
+          local_path: './App/build/*'
           remote_path: ${{ secrets.PATH }}/public
           port: 22
           args: '-o ConnectTimeout=30'
@@ -79,7 +79,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          script: pip install -r requirements.txt
+          script: cd ${{ secrets.PATH }} && pip install -r requirements.txt
       
       - name: Sync League & Std data
         uses: appleboy/ssh-action@v0.1.10
@@ -88,4 +88,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          script: python priceValueLP.py && python priceValueLP.py standard
+          script: cd cd ${{ secrets.PATH }} && python priceValueLP.py && python priceValueLP.py standard
