@@ -29,11 +29,8 @@ jobs:
         with:
           node-version: 'latest'
 
-      - name: Install dependancies
-        run: npm install
-
       - name: Build React app
-        run: node_modules/.bin/react-scripts build
+        run: npm install && node_modules/.bin/react-scripts build
 
       - name: 📂 Sync files
         uses: Stiwoz/git-sftp-action@master
@@ -67,7 +64,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           server: ${{ secrets.HOST }}
           ssh_private_key: ${{ secrets.SSH_KEY }}
-          local_path: './*'
+          local_path: './Api/*'
           remote_path: ${{ secrets.PATH }}
           port: 22
           args: '-o ConnectTimeout=30'
