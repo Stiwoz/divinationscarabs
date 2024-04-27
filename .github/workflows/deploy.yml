@@ -1,0 +1,89 @@
+
+name: 🚀 Deploy on push
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+
+  Build-Deploy-App:
+    name: 🎉 Deploy App
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    defaults:
+      run:
+        working-directory: App
+    steps:
+
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 10
+          persist-credentials: false
+
+      - name: 📚 Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'latest'
+
+      - name: Install dependancies
+        uses: jaid/action-npm-install@v1.2.4
+
+      - name: Build React app
+        run: node_modules/.bin/react-scripts build
+
+      - name: 📂 Sync files
+        uses: Stiwoz/git-sftp-action@master
+        with:
+          username: ${{ secrets.USERNAME }}
+          server: ${{ secrets.HOST }}
+          ssh_private_key: ${{ secrets.SSH_KEY }}
+          local_path: './build/*'
+          remote_path: ${{ secrets.PATH }}/public
+          port: 22
+          args: '-o ConnectTimeout=30'
+
+  Deploy-Api:
+    name: 🎉 Deploy Api
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    defaults:
+      run:
+        working-directory: Api
+    steps:
+
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 10
+          persist-credentials: false
+
+      - name: 📂 Sync files
+        uses: Stiwoz/git-sftp-action@master
+        with:
+          username: ${{ secrets.USERNAME }}
+          server: ${{ secrets.HOST }}
+          ssh_private_key: ${{ secrets.SSH_KEY }}
+          local_path: './*'
+          remote_path: ${{ secrets.PATH }}
+          port: 22
+          args: '-o ConnectTimeout=30'
+      
+      - name: Install Python dependancies
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: cd "${{ secrets.PATH }}" && pip install -r requirements.txt
+      
+      - name: Sync League & Std data
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: cd "${{ secrets.PATH }}" && python priceValueLP.py && python priceValueLP.py standard
