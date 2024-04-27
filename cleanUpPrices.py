@@ -2,28 +2,37 @@ import json
 from pathlib import Path
 
 cardData = './data/cards.json'
-cardPriceOverrides = './data/overrides.json'
+leagueCardPriceOverrides = './data/league_overrides.json'
+stdCardPriceOverrides = './data/std_overrides.json'
 
 def prepare_card_data(DEFAULT_WEIGHT, PRICE_FLOOR):
-    global cardData, cardPriceOverrides
+    global cardData, stdCardPriceOverrides, leagueCardPriceOverrides
     
     with open(cardData, 'r') as file:
         allCards = json.load(file)
-    with open(cardPriceOverrides, 'r') as file:
-        cardPriceOverrides = json.load(file)
+    with open(leagueCardPriceOverrides, 'r') as file:
+        leagueCardPriceOverrides = json.load(file)
+    with open(stdCardPriceOverrides, 'r') as file:
+        stdCardPriceOverrides = json.load(file)
 
     clean_card_data = []
 
     for card in allCards:
-        override = next((o for o in cardPriceOverrides if o['cardName'] == card['name']), None)
+        leagueOverride = next((o for o in leagueCardPriceOverrides if o['cardName'] == card['name']), None)
+        stdOverride = next((o for o in stdCardPriceOverrides if o['cardName'] == card['name']), None)
 
         if card.get('reward') == 'Disabled':
             continue
 
-        if override:
-            card['price'] = override['cardValue']
+        if leagueOverride:
+            card['price'] = leagueOverride['cardValue']
         elif card['price'] < PRICE_FLOOR:
             card['price'] = 0
+
+        if stdOverride:
+            card['standardPrice'] = stdOverride['cardValue']
+        elif card['standardPrice'] < PRICE_FLOOR:
+            card['standardPrice'] = 0
 
         if 'drop' not in card:
             continue
@@ -34,5 +43,5 @@ def prepare_card_data(DEFAULT_WEIGHT, PRICE_FLOOR):
 
         clean_card_data.append(card)
 
-    with open("prices.json", "w") as file:
+    with open("./temp/prices.json", "w") as file:
         json.dump(clean_card_data, file)
