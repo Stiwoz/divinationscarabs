@@ -16,6 +16,7 @@ jobs:
     defaults:
       run:
         working-directory: ./App
+        shell: 'bash'
     steps:
 
       - name: 🚚 Get latest code
