@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 10
-          persist-credentials: false
+          # persist-credentials: false
 
       - name: 📚 Use Node.js
         uses: actions/setup-node@v4
