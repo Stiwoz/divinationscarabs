@@ -12,11 +12,10 @@ jobs:
   Build-Deploy-App:
     name: 🎉 Deploy App
     runs-on: ubuntu-latest
-    continue-on-error: false
+    continue-on-error: true
     defaults:
       run:
         working-directory: ./App
-        shell: 'sh'
     steps:
 
       - name: 🚚 Get latest code
@@ -38,19 +37,19 @@ jobs:
       
       - run: cat /home/runner/.npm/_logs/*-debug-0.log
 
-      - name: Build React app
-        run: npm run build
+      # - name: Build React app
+      #   run: npm run build
 
-      - name: 📂 Sync files
-        uses: Stiwoz/git-sftp-action@master
-        with:
-          username: ${{ secrets.USERNAME }}
-          server: ${{ secrets.HOST }}
-          ssh_private_key: ${{ secrets.SSH_KEY }}
-          local_path: './App/build/*'
-          remote_path: ${{ secrets.PATH }}/public
-          port: 22
-          args: '-o ConnectTimeout=30'
+      # - name: 📂 Sync files
+      #   uses: Stiwoz/git-sftp-action@master
+      #   with:
+      #     username: ${{ secrets.USERNAME }}
+      #     server: ${{ secrets.HOST }}
+      #     ssh_private_key: ${{ secrets.SSH_KEY }}
+      #     local_path: './App/build/*'
+      #     remote_path: ${{ secrets.PATH }}/public
+      #     port: 22
+      #     args: '-o ConnectTimeout=30'
 
   Deploy-Api:
     name: 🎉 Deploy Api
