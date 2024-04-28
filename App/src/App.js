@@ -1,4 +1,3 @@
-import { cards as allCards } from './consts/cards';
 import { maps as allMaps } from './consts/maps';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -138,7 +137,7 @@ const calculateCardEV = (stack, cardCount, price, useStackScarab) => {
   return { ev, drops };
 };
 
-const getCalculatedCards = (areas) => {
+const getCalculatedCards = (areas, allCards) => {
   let totalRawEV = 0;
   let totalStackScarabEV = 0;
 
@@ -309,7 +308,7 @@ const printDataToHtml = (
   );
 };
 
-export function League() {
+export function League({ allCards }) {
   const [targetAreasLeague, setTargetAreasLeague] = useState([]);
   useEffect(() => {
     async function getTargetAreasLeague() {
@@ -333,13 +332,13 @@ export function League() {
     cards: rawCards,
     totalRawEV,
     totalStackScarabEV,
-  } = getCalculatedCards(targetAreasLeague);
+  } = getCalculatedCards(targetAreasLeague, allCards);
   const sortedCards = rawCards.sort((a, b) => b.rawEV - a.rawEV);
   const allMapVals = allMaps
     .map((map) => ({
       name: map,
-      res: getCalculatedCards([map]),
-      predicted: getCalculatedCards([...targetAreasLeague, map]),
+      res: getCalculatedCards([map], allCards),
+      predicted: getCalculatedCards([...targetAreasLeague, map], allCards),
     }))
     .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
 
@@ -354,7 +353,7 @@ export function League() {
   );
 }
 
-export function Standard() {
+export function Standard({ allCards }) {
   const [targetAreasStd, setTargetAreasStd] = useState([]);
   useEffect(() => {
     async function getTargetAreasStd() {
@@ -378,7 +377,7 @@ export function Standard() {
     cards: rawCards,
     totalRawEV,
     totalStackScarabEV,
-  } = getCalculatedCards(targetAreasStd);
+  } = getCalculatedCards(targetAreasStd, allCards);
   const sortedCards = rawCards
     .sort((a, b) => b.rawEV - a.rawEV)
     .map((c) => ({
@@ -388,8 +387,8 @@ export function Standard() {
   const allMapVals = allMaps
     .map((map) => ({
       name: map,
-      res: getCalculatedCards([map]),
-      predicted: getCalculatedCards([...targetAreasStd, map]),
+      res: getCalculatedCards([map], allCards),
+      predicted: getCalculatedCards([...targetAreasStd, map], allCards),
     }))
     .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
 
@@ -405,10 +404,25 @@ export function Standard() {
 }
 
 export default function App() {
+  const [allCards, setAllCards] = useState([]);
+  useEffect(() => {
+    async function getAllCards() {
+      const response = await fetch('https://poe.stiwoz.cloud/api/cards.json');
+      const data = await response.json();
+      setAllCards(data);
+    }
+
+    if (!allCards.length) {
+      getAllCards();
+    }
+  }, []);
+
+  if (!allCards.length) return <div>Loading...</div>;
+
   return (
     <Routes>
-      <Route index path='league' element={<League />} />
-      <Route path='standard' element={<Standard />} />
+      <Route index path='league' element={<League allCards={allCards} />} />
+      <Route path='standard' element={<Standard allCards={allCards} />} />
       <Route path='*' element={<Navigate to='/league' />} />
     </Routes>
   );
