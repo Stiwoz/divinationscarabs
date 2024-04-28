@@ -379,11 +379,9 @@ export function Standard() {
 export default function App() {
   return (
     <Routes>
-      <Route path='/' >
-        <Route index path='league' element={<League />} />
-        <Route path='standard' element={<Standard />} />
-        <Route path='*' element={<Navigate to='/league' />} />
-      </Route>
+      <Route index path='league' element={<League />} />
+      <Route path='standard' element={<Standard />} />
+      <Route path='*' element={<Navigate to='/league' />} />
     </Routes>
   );
 }
