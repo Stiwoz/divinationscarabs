@@ -7,21 +7,6 @@ const CARD_PRICE_FLOOR_FILTER = 6;
 const CARD_WEIGHT_FLOOR_FILTER = 0;
 const GLOBAL_DROP_RATE = 7954753;
 const AREA_LEVEL = 83;
-const TARGET_AREAS = [
-  'Phantasmagoria',
-  'DefiledCathedral',
-  'Cemetery',
-  'DrySea',
-  'Arsenal',
-  'Shrine',
-  'Maze',
-  'Belfry',
-  'Mausoleum',
-  'Wharf',
-  'Cells',
-  'OvergrownShrine',
-  'CastleRuins',
-];
 const USE_FORCE_REMOVE_FILTER = true;
 const USE_FORCE_SHOW_FILTER = true;
 const FORCE_REMOVE_V_FILTER = new Set([]);
@@ -322,7 +307,10 @@ const printDataToHtml = (
   );
 };
 
-export function League() {
+export async function League() {
+  const TARGET_AREAS = await fetch(
+    'https://poe.stiwoz.cloud/api/league_maps.json'
+  ).then((res) => res.json());
   const {
     mapTotalWeight,
     dropPoolItems,
@@ -349,7 +337,10 @@ export function League() {
   );
 }
 
-export function Standard() {
+export async function Standard () {
+    const TARGET_AREAS = await fetch(
+        'https://poe.stiwoz.cloud/api/league_maps.json'
+    ).then((res) => res.json());
   const {
     mapTotalWeight,
     dropPoolItems,
