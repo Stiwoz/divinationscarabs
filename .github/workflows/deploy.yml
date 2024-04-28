@@ -26,17 +26,17 @@ jobs:
           fetch-depth: 10
           persist-credentials: false
 
-      - name: 📚 Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-          cache: 'npm'
-          cache-dependency-path: ./App/package-lock.json
+      # - name: 📚 Use Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 22.x
+      #     cache: 'npm'
+      #     cache-dependency-path: ./App/package-lock.json
 
-      - name: ⚙️ Install git
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install git
+      # - name: ⚙️ Install git
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get -y install git
 
       - name: ⚙️ Install dependancies
         run: npm ci --loglevel verbose
