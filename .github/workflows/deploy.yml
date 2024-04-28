@@ -17,7 +17,7 @@ jobs:
       run:
         working-directory: ./App
     env:
-      npm_config_user: "root"
+      npm_config_user: root
     steps:
 
       - name: 🚚 Get latest code
@@ -35,8 +35,8 @@ jobs:
 
       - name: ⚙️ Install git
         run: |
-          sudo apt-get update
-          sudo apt-get -y install git
+          apt-get update
+          apt-get -y install git
 
       - name: ⚙️ Install dependancies
         run: npm ci --loglevel verbose
