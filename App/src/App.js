@@ -197,6 +197,7 @@ const getCalculatedCards = (areas) => {
 };
 
 const printDataToHtml = (
+  targetAreas,
   mapTotalWeight,
   dropPoolItems,
   totalRawEV,
@@ -210,7 +211,7 @@ const printDataToHtml = (
     >
       <h3>INPUTS</h3>
       <h5>chosen maps:</h5>
-      {TARGET_AREAS.map((area, idx) => (
+      {targetAreas.map((area, idx) => (
         <span key={idx}>{area}</span>
       ))}
       <br />
@@ -308,7 +309,7 @@ const printDataToHtml = (
 };
 
 export async function League() {
-  const TARGET_AREAS = await fetch(
+  const targetAreas = await fetch(
     'https://poe.stiwoz.cloud/api/league_maps.json'
   ).then((res) => res.json());
   const {
@@ -317,13 +318,13 @@ export async function League() {
     cards: rawCards,
     totalRawEV,
     totalStackScarabEV,
-  } = getCalculatedCards(TARGET_AREAS);
+  } = getCalculatedCards(targetAreas);
   const sortedCards = rawCards.sort((a, b) => b.rawEV - a.rawEV);
   const allMapVals = allMaps
     .map((map) => ({
       name: map,
       res: getCalculatedCards([map]),
-      predicted: getCalculatedCards([...TARGET_AREAS, map]),
+      predicted: getCalculatedCards([...targetAreas, map]),
     }))
     .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
 
@@ -337,23 +338,23 @@ export async function League() {
   );
 }
 
-export async function Standard () {
-    const TARGET_AREAS = await fetch(
-        'https://poe.stiwoz.cloud/api/league_maps.json'
-    ).then((res) => res.json());
+export async function Standard() {
+  const targetAreas = await fetch(
+    'https://poe.stiwoz.cloud/api/league_maps.json'
+  ).then((res) => res.json());
   const {
     mapTotalWeight,
     dropPoolItems,
     cards: rawCards,
     totalRawEV,
     totalStackScarabEV,
-  } = getCalculatedCards(TARGET_AREAS);
+  } = getCalculatedCards(targetAreas);
   const sortedCards = rawCards.sort((a, b) => b.rawEV - a.rawEV);
   const allMapVals = allMaps
     .map((map) => ({
       name: map,
       res: getCalculatedCards([map]),
-      predicted: getCalculatedCards([...TARGET_AREAS, map]),
+      predicted: getCalculatedCards([...targetAreas, map]),
     }))
     .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
 
