@@ -16,7 +16,7 @@ jobs:
     defaults:
       run:
         working-directory: ./App
-        shell: "/bin/sh"
+        shell: sh
     steps:
 
       - name: 🚚 Get latest code
