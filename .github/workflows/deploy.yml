@@ -31,7 +31,8 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ./App/package-lock.json
 
-      - uses: bahmutov/npm-install@v1
+      - name: Install dependancies
+        run: npm ci
         with:
           working-directory: ./App
 
