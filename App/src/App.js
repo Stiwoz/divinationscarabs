@@ -1,6 +1,7 @@
 import { cards as allCards } from './consts/cards';
 import { maps as allMaps } from './consts/maps';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import './styles.css';
 
 const CARD_PRICE_FLOOR_FILTER = 6;
@@ -308,27 +309,42 @@ const printDataToHtml = (
   );
 };
 
-export async function League() {
-  const resp = await fetch('https://poe.stiwoz.cloud/api/league_maps.json');
-  const targetAreas = await resp.json();
+export function League() {
+  const [targetAreasLeague, setTargetAreasLeague] = useState([]);
+  useEffect(() => {
+    async function getTargetAreasLeague() {
+      const response = await fetch(
+        'https://poe.stiwoz.cloud/api/league_maps.json'
+      );
+      const data = await response.json();
+      setTargetAreasLeague(data);
+    }
+
+    if (!targetAreasLeague.length) {
+      getTargetAreasLeague();
+    }
+  }, []);
+
+  if (!targetAreasLeague.length) return <div>Loading...</div>;
+
   const {
     mapTotalWeight,
     dropPoolItems,
     cards: rawCards,
     totalRawEV,
     totalStackScarabEV,
-  } = getCalculatedCards(targetAreas);
+  } = getCalculatedCards(targetAreasLeague);
   const sortedCards = rawCards.sort((a, b) => b.rawEV - a.rawEV);
   const allMapVals = allMaps
     .map((map) => ({
       name: map,
       res: getCalculatedCards([map]),
-      predicted: getCalculatedCards([...targetAreas, map]),
+      predicted: getCalculatedCards([...targetAreasLeague, map]),
     }))
     .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
 
   return printDataToHtml(
-    targetAreas,
+    targetAreasLeague,
     mapTotalWeight,
     dropPoolItems,
     totalRawEV,
@@ -338,27 +354,42 @@ export async function League() {
   );
 }
 
-export async function Standard() {
-  const resp = await fetch('https://poe.stiwoz.cloud/api/std_maps.json');
-  const targetAreas = await resp.json();
+export function Standard() {
+  const [targetAreasStd, setTargetAreasStd] = useState([]);
+  useEffect(() => {
+    async function getTargetAreasStd() {
+      const response = await fetch(
+        'https://poe.stiwoz.cloud/api/std_maps.json'
+      );
+      const data = await response.json();
+      setTargetAreasStd(data);
+    }
+
+    if (!targetAreasStd.length) {
+      getTargetAreasStd();
+    }
+  }, []);
+
+  if (!targetAreasStd.length) return <div>Loading...</div>;
+
   const {
     mapTotalWeight,
     dropPoolItems,
     cards: rawCards,
     totalRawEV,
     totalStackScarabEV,
-  } = getCalculatedCards(targetAreas);
+  } = getCalculatedCards(targetAreasStd);
   const sortedCards = rawCards.sort((a, b) => b.rawEV - a.rawEV);
   const allMapVals = allMaps
     .map((map) => ({
       name: map,
       res: getCalculatedCards([map]),
-      predicted: getCalculatedCards([...targetAreas, map]),
+      predicted: getCalculatedCards([...targetAreasStd, map]),
     }))
     .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
 
   return printDataToHtml(
-    targetAreas,
+    targetAreasStd,
     mapTotalWeight,
     dropPoolItems,
     totalRawEV,
