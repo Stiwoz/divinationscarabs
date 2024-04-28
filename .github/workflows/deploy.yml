@@ -33,8 +33,7 @@ jobs:
 
       - name: Install dependancies
         run: npm ci
-        with:
-          working-directory: ./App
+        working-directory: ./App
 
       - name: Build React app
         run: npm run build
