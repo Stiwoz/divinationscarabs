@@ -309,9 +309,8 @@ const printDataToHtml = (
 };
 
 export async function League() {
-  const targetAreas = await fetch(
-    'https://poe.stiwoz.cloud/api/league_maps.json'
-  ).then((res) => res.json());
+  const resp = await fetch('https://poe.stiwoz.cloud/api/league_maps.json');
+  const targetAreas = await resp.json();
   const {
     mapTotalWeight,
     dropPoolItems,
@@ -329,6 +328,7 @@ export async function League() {
     .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
 
   return printDataToHtml(
+    targetAreas,
     mapTotalWeight,
     dropPoolItems,
     totalRawEV,
@@ -339,9 +339,8 @@ export async function League() {
 }
 
 export async function Standard() {
-  const targetAreas = await fetch(
-    'https://poe.stiwoz.cloud/api/league_maps.json'
-  ).then((res) => res.json());
+  const resp = await fetch('https://poe.stiwoz.cloud/api/std_maps.json');
+  const targetAreas = await resp.json();
   const {
     mapTotalWeight,
     dropPoolItems,
@@ -359,6 +358,7 @@ export async function Standard() {
     .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
 
   return printDataToHtml(
+    targetAreas,
     mapTotalWeight,
     dropPoolItems,
     totalRawEV,
