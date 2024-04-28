@@ -379,7 +379,12 @@ export function Standard() {
     totalRawEV,
     totalStackScarabEV,
   } = getCalculatedCards(targetAreasStd);
-  const sortedCards = rawCards.sort((a, b) => b.rawEV - a.rawEV);
+  const sortedCards = rawCards
+    .sort((a, b) => b.rawEV - a.rawEV)
+    .map((c) => ({
+      ...c,
+      ninja: c.ninja.replace('challenge', 'standard'),
+    }));
   const allMapVals = allMaps
     .map((map) => ({
       name: map,
