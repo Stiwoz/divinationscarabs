@@ -34,11 +34,11 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ./App/package-lock.json
 
+      - run: git --version
+      
       - name: Install dependancies
         run: npm ci --loglevel verbose
 
-      - run: git --version
-      
       - name: Build React app
         run: npm run build
 
