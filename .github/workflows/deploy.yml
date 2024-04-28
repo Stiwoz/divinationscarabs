@@ -17,6 +17,8 @@ jobs:
       run:
         working-directory: ./App
         shell: bash
+    env:
+      npm_config_user: "root"
     steps:
 
       - name: 🚚 Get latest code
