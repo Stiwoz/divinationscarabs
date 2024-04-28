@@ -16,7 +16,6 @@ jobs:
     defaults:
       run:
         working-directory: ./App
-        shell: bash
     env:
       npm_config_user: "root"
     steps:
