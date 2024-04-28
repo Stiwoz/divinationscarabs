@@ -34,9 +34,12 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ./App/package-lock.json
 
-      - run: git --version
-      
-      - name: Install dependancies
+      - name: ⚙️ Install git
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install git
+
+      - name: ⚙️ Install dependancies
         run: npm ci --loglevel verbose
 
       - name: Build React app
@@ -79,7 +82,7 @@ jobs:
           port: 22
           args: '-o ConnectTimeout=30'
       
-      - name: Install Python dependancies
+      - name: ⚙️ Install Python dependancies
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.HOST }}
@@ -88,7 +91,7 @@ jobs:
           port: 22
           script: cd ${{ secrets.PATH }} && pip install -r requirements.txt
       
-      - name: Sync League & Std data
+      - name: 🔄 Sync League & Std data
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.HOST }}
