@@ -122,5 +122,9 @@
 	{
 		"cardName": "Terrible Secret of Space",
 		"cardValue": 0.5
-	}
+	},
+    {
+        "cardName": "Fire Of Unknown Origin",
+        "cardValue": 1020
+    }
 ]

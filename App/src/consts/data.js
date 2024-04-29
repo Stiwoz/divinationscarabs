@@ -104,7 +104,7 @@ export const FORCE_SHOW_FILTER = new Set([
   'Draped in Dreams',
   'Immortal Resolve',
   'The Celestial Justicar',
-  'The Porcupine',
+  'Fire Of Unknown Origin',
   'The Innocent',
 ]);
 export const REAL_CARD_RATE = { name: 'The Union', number: 38 };

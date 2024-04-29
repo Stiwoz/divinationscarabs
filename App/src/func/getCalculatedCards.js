@@ -53,7 +53,14 @@ export default function getCalculatedCards(areas, allCards) {
     const rawEV = calculateCardEV(card.stack, dropsPerMap, card.price, false);
     totalRawEV += rawEV.ev;
     const ssEV = calculateCardEV(card.stack, dropsPerMap, card.price, true);
-    totalStackScarabEV += ssEV.ev;
+      totalStackScarabEV += ssEV.ev;
+      
+      if ( card.name === 'Fire Of Unknown Origin' || card.name === 'The Doctor') {
+            console.log('card', card);
+            console.log('dropsPerMap', dropsPerMap);
+            console.log('rawEV', rawEV);
+            console.log('ssEV', ssEV);
+        }
     return {
       ...card,
       rawDrops: rawEV.drops,

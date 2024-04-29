@@ -14,6 +14,9 @@ def update_prices_json():
     with open('./data/cards.json') as f:
         cards = json.load(f)
     
+    with open('./realWeights.json') as f:
+        weights = json.load(f)
+    
     updatedList = []
     for card in cards:
         stdCard = next((line for line in stdPoeNinja['lines'] if line['name'] == card['name']), None)
@@ -21,7 +24,11 @@ def update_prices_json():
         updatedCard = card.copy()
         updatedCard['standardPrice'] = stdCard['chaosValue'] if stdCard else 0.0
         updatedCard['price'] = leagueCard['chaosValue'] if leagueCard else 0.0
+        updatedCard['weight'] = weights[0][card['name']] if card['name'] in weights[0] else 0.0
         updatedList.append(updatedCard)
 
     with open('./data/cards.json', 'w') as f:
         json.dump(updatedList, f, indent=4)
+
+if __name__ == '__main__':
+    update_prices_json()
