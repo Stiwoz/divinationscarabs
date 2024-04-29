@@ -89,7 +89,8 @@ export const FORCE_REMOVE_FILTER = new Set([
   'The Witch',
   'Three Voices',
   "The Dragon's Heart",
-  'Cursed Words',
+    'Cursed Words',
+  'Terrible Secret of Space'
 ]);
 export const FORCE_SHOW_FILTER = new Set([
   'The Primordial',

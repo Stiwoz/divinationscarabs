@@ -118,5 +118,9 @@
 	{
 		"cardName": "The Hunger",
 		"cardValue": 12
+	},
+	{
+		"cardName": "Terrible Secret of Space",
+		"cardValue": 0.5
 	}
 ]
