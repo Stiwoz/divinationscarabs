@@ -25,7 +25,20 @@ def update_prices_json():
         updatedCard['standardPrice'] = stdCard['chaosValue'] if stdCard else 0.0
         updatedCard['price'] = leagueCard['chaosValue'] if leagueCard else 0.0
         updatedCard['weight'] = weights[0][card['name']] if card['name'] in weights[0] else 0.0
-        updatedList.append(updatedCard)
+
+        isDisabled = False
+        for explicits in stdCard['explicitModifiers']:
+            if explicits['text'].startswith('Disabled'):
+                isDisabled = True
+                break
+        
+        for explicits in leagueCard['explicitModifiers']:
+            if explicits['text'].startswith('Disabled'):
+                isDisabled = True
+                break
+        
+        if not isDisabled:
+            updatedList.append(updatedCard)
 
     with open('./data/cards.json', 'w') as f:
         json.dump(updatedList, f, indent=4)

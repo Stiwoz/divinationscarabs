@@ -20,8 +20,10 @@ const printDataToHtml = (
   totalRawEV,
   totalStackScarabEV,
   sortedCards,
-  allMapVals
+  allMapVals,
+  league
 ) => {
+    const priceLabel = league.toLowerCase() === 'standard' ? 'standardPrice' : 'price';
   return (
     <div
       style={{ display: 'flex', flexDirection: 'column', overflowX: 'scroll' }}
@@ -72,7 +74,7 @@ const printDataToHtml = (
               {c.name} ({c.stack})
             </a>
           </div>
-          <div style={{ minWidth: '100px' }}>{c.price}</div>
+          <div style={{ minWidth: '100px' }}>{c[priceLabel]}</div>
           <div style={{ minWidth: '75px' }}>{c.rawEV.toFixed(2)}</div>
           <div style={{ minWidth: '75px' }}>{c.stackScarabEV.toFixed(2)}</div>
           <div style={{ minWidth: '100px' }}>{c.rawDrops.toFixed(2)}</div>
@@ -148,13 +150,13 @@ export function League({ allCards, setTargetAreas, targetAreas }) {
     cards: rawCards,
     totalRawEV,
     totalStackScarabEV,
-  } = getCalculatedCards(targetAreas, allCards);
+  } = getCalculatedCards(targetAreas, allCards, 'league');
   const sortedCards = rawCards.sort((a, b) => b.rawEV - a.rawEV);
   const allMapVals = allMaps
     .map((map) => ({
       name: map,
-      res: getCalculatedCards([map], allCards),
-      predicted: getCalculatedCards([...targetAreas, map], allCards),
+      res: getCalculatedCards([map], allCards, 'league'),
+      predicted: getCalculatedCards([...targetAreas, map], allCards, 'league'),
     }))
     .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
 
@@ -166,7 +168,8 @@ export function League({ allCards, setTargetAreas, targetAreas }) {
     totalRawEV,
     totalStackScarabEV,
     sortedCards,
-    allMapVals
+    allMapVals,
+    'league'
   );
 }
 
@@ -194,7 +197,7 @@ export function Standard({ allCards, setTargetAreas, targetAreas }) {
     cards: rawCards,
     totalRawEV,
     totalStackScarabEV,
-  } = getCalculatedCards(targetAreas, allCards);
+  } = getCalculatedCards(targetAreas, allCards, 'standard');
   const sortedCards = rawCards
     .sort((a, b) => b.rawEV - a.rawEV)
     .map((c) => ({
@@ -204,8 +207,8 @@ export function Standard({ allCards, setTargetAreas, targetAreas }) {
   const allMapVals = allMaps
     .map((map) => ({
       name: map,
-      res: getCalculatedCards([map], allCards),
-      predicted: getCalculatedCards([...targetAreas, map], allCards),
+      res: getCalculatedCards([map], allCards, 'standard'),
+      predicted: getCalculatedCards([...targetAreas, map], allCards, 'standard'),
     }))
     .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
 
@@ -217,7 +220,8 @@ export function Standard({ allCards, setTargetAreas, targetAreas }) {
     totalRawEV,
     totalStackScarabEV,
     sortedCards,
-    allMapVals
+    allMapVals,
+    'standard'
   );
 }
 

@@ -13,7 +13,7 @@ import {
     USE_FORCE_SHOW_FILTER,
 } from '../consts/data';
 
-export default function getCalculatedCards(areas, allCards) {
+export default function getCalculatedCards(areas, allCards, league) {
   let totalRawEV = 0;
   let totalStackScarabEV = 0;
 
@@ -33,10 +33,11 @@ export default function getCalculatedCards(areas, allCards) {
     (1 / (cardWeightBaseline / currentTotalWeight)) * REAL_CARD_RATE.number;
   const dpiMultiplier = (PINNED_DPI ?? dropPoolItems) / dropPoolItems;
 
+  const priceLabel = league.toLowerCase() === 'standard' ? 'standardPrice' : 'price';
   // filter all cards based on various conditions
   const filteredCards = mapCards.filter(
     (card) =>
-      (card.price >= CARD_PRICE_FLOOR_FILTER &&
+      (card[priceLabel] >= CARD_PRICE_FLOOR_FILTER &&
         !FORCE_REMOVE_V_FILTER.has(card.name) &&
         (!FORCE_REMOVE_FILTER.has(card.name) || !USE_FORCE_REMOVE_FILTER) &&
         card.weight !== undefined &&
@@ -50,17 +51,11 @@ export default function getCalculatedCards(areas, allCards) {
       (card.weight / currentTotalWeight) * dropPoolItems;
     const dropsPerMap = individualDropRate * dpiMultiplier;
     // calculate EVs
-    const rawEV = calculateCardEV(card.stack, dropsPerMap, card.price, false);
+    const rawEV = calculateCardEV(card.stack, dropsPerMap, card[priceLabel], false);
     totalRawEV += rawEV.ev;
-    const ssEV = calculateCardEV(card.stack, dropsPerMap, card.price, true);
+    const ssEV = calculateCardEV(card.stack, dropsPerMap, card[priceLabel], true);
       totalStackScarabEV += ssEV.ev;
       
-      if ( card.name === 'Fire Of Unknown Origin' || card.name === 'The Doctor') {
-            console.log('card', card);
-            console.log('dropsPerMap', dropsPerMap);
-            console.log('rawEV', rawEV);
-            console.log('ssEV', ssEV);
-        }
     return {
       ...card,
       rawDrops: rawEV.drops,
