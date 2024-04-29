@@ -31,6 +31,7 @@ const printDataToHtml = (
       <h3>INPUTS</h3>
       <h5>Chosen maps:</h5>
       <textarea
+        placeholder='Enter maps here, one per line, with no spaces (e.g. DefiledCathedral)'
         rows={targetAreas.length}
         value={targetAreas.join('\n')}
         onChange={(e) => inputMapsChanged(e, setTargetAreas)}
