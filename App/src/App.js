@@ -6,8 +6,14 @@ import './styles.css';
 import getCalculatedCards from './func/getCalculatedCards';
 import { REAL_CARD_RATE, PINNED_DPI } from './consts/data';
 
+const inputMapsChanged = ( e, setTargetAreas ) => {
+    const newMaps = e.target.value.split( '\n' );
+    setTargetAreas( newMaps );
+}
+
 const printDataToHtml = (
   targetAreas,
+  setTargetAreas,
   mapTotalWeight,
   dropPoolItems,
   totalRawEV,
@@ -21,9 +27,7 @@ const printDataToHtml = (
     >
       <h3>INPUTS</h3>
       <h5>chosen maps:</h5>
-      {targetAreas.map((area, idx) => (
-        <span key={idx}>{area}</span>
-      ))}
+      <textarea rows={targetAreas.length} value={targetAreas.join('\n')} onChange={(e)=>inputMapsChanged(e, setTargetAreas)}></textarea>
       <br />
       <h5>total map weight: {mapTotalWeight}</h5>
       <h5>
@@ -115,36 +119,78 @@ const printDataToHtml = (
         );
       })}
       <footer style={{ marginTop: '60px' }}>
-        <p>Credits to ABodyPillow, DKrizere & deathbeam for the <a target='_blank' href='https://6jtcys.csb.app/'>original tool</a></p>
-        <p>Credits to <a target='_blank' href='https://www.twitch.tv/snapow'>Snap</a>, <a target='_blank' href='https://www.twitch.tv/empyriangaming'>Empy</a> and their whole group for the work they put into the original tool and the data it uses</p>
-        <p>Credits to <a target='_blank' href="https://github.com/nerdyjoe314">nerdyjoe314</a> for the <a target='_blank' href='https://github.com/nerdyjoe314/divinationscarabs'>original algorithm</a> used to calculate the best maps to use</p>
-        <p>Card prices and weightings taken from <a target='_blank' href='https://poe.ninja/'>Poe Ninja</a></p>
-        <p>Thanks to <a target='_blank' href='https://www.twitch.tv/dapanotv'>DapanoTV</a> for triggering my autism and making me do this :)</p>
         <p>
-          <a target='_blank' href='https://github.com/Stiwoz/poe.stiwoz.cloud'>Source code</a>
+          Credits to ABodyPillow, DKrizere & deathbeam for the{' '}
+          <a target='_blank' href='https://6jtcys.csb.app/'>
+            original tool
+          </a>
+        </p>
+        <p>
+          Credits to{' '}
+          <a target='_blank' href='https://www.twitch.tv/snapow'>
+            Snap
+          </a>
+          ,{' '}
+          <a target='_blank' href='https://www.twitch.tv/empyriangaming'>
+            Empy
+          </a>{' '}
+          and their whole group for the work they put into the original tool and
+          the data it uses
+        </p>
+        <p>
+          Credits to{' '}
+          <a target='_blank' href='https://github.com/nerdyjoe314'>
+            nerdyjoe314
+          </a>{' '}
+          for the{' '}
+          <a
+            target='_blank'
+            href='https://github.com/nerdyjoe314/divinationscarabs'
+          >
+            original algorithm
+          </a>{' '}
+          used to calculate the best maps to use
+        </p>
+        <p>
+          Card prices and weightings taken from{' '}
+          <a target='_blank' href='https://poe.ninja/'>
+            Poe Ninja
+          </a>
+        </p>
+        <p>
+          Thanks to{' '}
+          <a target='_blank' href='https://www.twitch.tv/dapanotv'>
+            DapanoTV
+          </a>{' '}
+          for triggering my autism and making me do this :)
+        </p>
+        <p>
+          <a target='_blank' href='https://github.com/Stiwoz/poe.stiwoz.cloud'>
+            Source code
+          </a>
         </p>
       </footer>
     </div>
   );
 };
 
-export function League({ allCards }) {
-  const [targetAreasLeague, setTargetAreasLeague] = useState([]);
+export function League({ allCards, setTargetAreas, targetAreas }) {
+  
   useEffect(() => {
-    async function getTargetAreasLeague() {
+    async function getTargetAreas() {
       const response = await fetch(
         'https://poe.stiwoz.cloud/api/league_maps.json'
       );
       const data = await response.json();
-      setTargetAreasLeague(data);
+      setTargetAreas(data);
     }
 
-    if (!targetAreasLeague.length) {
-      getTargetAreasLeague();
+    if (!targetAreas.length) {
+      getTargetAreas();
     }
   }, []);
 
-  if (!targetAreasLeague.length) return <div>Loading...</div>;
+  if (!targetAreas.length) return <div>Loading...</div>;
 
   const {
     mapTotalWeight,
@@ -152,18 +198,19 @@ export function League({ allCards }) {
     cards: rawCards,
     totalRawEV,
     totalStackScarabEV,
-  } = getCalculatedCards(targetAreasLeague, allCards);
+  } = getCalculatedCards(targetAreas, allCards);
   const sortedCards = rawCards.sort((a, b) => b.rawEV - a.rawEV);
   const allMapVals = allMaps
     .map((map) => ({
       name: map,
       res: getCalculatedCards([map], allCards),
-      predicted: getCalculatedCards([...targetAreasLeague, map], allCards),
+      predicted: getCalculatedCards([...targetAreas, map], allCards),
     }))
     .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
 
   return printDataToHtml(
-    targetAreasLeague,
+    targetAreas,
+    setTargetAreas,
     mapTotalWeight,
     dropPoolItems,
     totalRawEV,
@@ -173,23 +220,23 @@ export function League({ allCards }) {
   );
 }
 
-export function Standard({ allCards }) {
-  const [targetAreasStd, setTargetAreasStd] = useState([]);
+export function Standard({ allCards, setTargetAreas, targetAreas }) {
+
   useEffect(() => {
-    async function getTargetAreasStd() {
+    async function getTargetAreas() {
       const response = await fetch(
         'https://poe.stiwoz.cloud/api/std_maps.json'
       );
       const data = await response.json();
-      setTargetAreasStd(data);
+      setTargetAreas(data);
     }
 
-    if (!targetAreasStd.length) {
-      getTargetAreasStd();
+    if (!targetAreas.length) {
+      getTargetAreas();
     }
   }, []);
 
-  if (!targetAreasStd.length) return <div>Loading...</div>;
+  if (!targetAreas.length) return <div>Loading...</div>;
 
   const {
     mapTotalWeight,
@@ -197,7 +244,7 @@ export function Standard({ allCards }) {
     cards: rawCards,
     totalRawEV,
     totalStackScarabEV,
-  } = getCalculatedCards(targetAreasStd, allCards);
+  } = getCalculatedCards(targetAreas, allCards);
   const sortedCards = rawCards
     .sort((a, b) => b.rawEV - a.rawEV)
     .map((c) => ({
@@ -208,12 +255,13 @@ export function Standard({ allCards }) {
     .map((map) => ({
       name: map,
       res: getCalculatedCards([map], allCards),
-      predicted: getCalculatedCards([...targetAreasStd, map], allCards),
+      predicted: getCalculatedCards([...targetAreas, map], allCards),
     }))
     .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
 
   return printDataToHtml(
-    targetAreasStd,
+    targetAreas,
+    setTargetAreas,
     mapTotalWeight,
     dropPoolItems,
     totalRawEV,
@@ -224,7 +272,8 @@ export function Standard({ allCards }) {
 }
 
 export default function App() {
-  const [allCards, setAllCards] = useState([]);
+const [allCards, setAllCards] = useState( [] );
+const [targetAreas, setTargetAreas] = useState( [] );
   useEffect(() => {
     async function getAllCards() {
       const response = await fetch('https://poe.stiwoz.cloud/api/cards.json');
@@ -241,8 +290,8 @@ export default function App() {
 
   return (
     <Routes>
-      <Route index path='league' element={<League allCards={allCards} />} />
-      <Route path='standard' element={<Standard allCards={allCards} />} />
+      <Route index path='league' element={<League allCards={allCards} targetAreas={targetAreas} setTargetAreas={setTargetAreas}  />} />
+      <Route path='standard' element={<Standard allCards={allCards} targetAreas={targetAreas} setTargetAreas={setTargetAreas} />} />
       <Route path='*' element={<Navigate to='/league' />} />
     </Routes>
   );
