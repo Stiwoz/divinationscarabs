@@ -68,9 +68,10 @@ const printDataToHtml = (
           {sortedCards.map((c, idx) => (
             <tr key={idx} disabled={c.reward == 'Disabled'}>
               <td>
-                <a href={c.ninja} target='_blank' title={c.reward}>
+                <a href={c.ninja} target='_blank'>
                   {c.name} ({c.stack})
                 </a>
+                <small>{c.reward}</small>
               </td>
               <td>{c[priceLabel]}</td>
               <td>{c.rawEV.toFixed(2)}</td>
@@ -100,18 +101,10 @@ const printDataToHtml = (
             return (
               <tr key={idx}>
                 <td>{name}</td>
-                <td>
-                  {res.totalRawEV.toFixed(2)}
-                </td>
-                <td>
-                  {res.totalStackScarabEV.toFixed(2)}
-                </td>
-                <td>
-                  {predicted.totalRawEV.toFixed(2)}
-                </td>
-                <td>
-                  {predicted.totalStackScarabEV.toFixed(2)}
-                </td>
+                <td>{res.totalRawEV.toFixed(2)}</td>
+                <td>{res.totalStackScarabEV.toFixed(2)}</td>
+                <td>{predicted.totalRawEV.toFixed(2)}</td>
+                <td>{predicted.totalStackScarabEV.toFixed(2)}</td>
               </tr>
             );
           })}
