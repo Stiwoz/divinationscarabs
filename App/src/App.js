@@ -2,16 +2,15 @@ import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import './styles.css';
 
-import { maps as allMaps } from './consts/maps';
 import { REAL_CARD_RATE, PINNED_DPI } from './consts/data';
 import getCalculatedCards from './func/getCalculatedCards';
 import getHeaderHtml from './func/getHeaderHtml';
 import getFooterHtml from './func/getFooterHtml';
 
-const inputMapsChanged = ( e, setTargetAreas ) => {
-    const newMaps = e.target.value.split( '\n' );
-    setTargetAreas( newMaps );
-}
+const inputMapsChanged = (e, setTargetAreas) => {
+  const newMaps = e.target.value.split('\n');
+  setTargetAreas(newMaps);
+};
 
 const printDataToHtml = (
   targetAreas,
@@ -24,15 +23,20 @@ const printDataToHtml = (
   allMapVals,
   league
 ) => {
-    const priceLabel = league.toLowerCase() === 'standard' ? 'standardPrice' : 'price';
-    return (
-        <div
-        style={{ display: 'flex', flexDirection: 'column', overflowX: 'scroll' }}
-        >
-        {getHeaderHtml()}
+  const priceLabel =
+    league.toLowerCase() === 'standard' ? 'standardPrice' : 'price';
+  return (
+    <div
+      style={{ display: 'flex', flexDirection: 'column', overflowX: 'scroll' }}
+    >
+      {getHeaderHtml()}
       <h3>INPUTS</h3>
       <h5>chosen maps:</h5>
-      <textarea rows={targetAreas.length} value={targetAreas.join('\n')} onChange={(e)=>inputMapsChanged(e, setTargetAreas)}></textarea>
+      <textarea
+        rows={targetAreas.length}
+        value={targetAreas.join('\n')}
+        onChange={(e) => inputMapsChanged(e, setTargetAreas)}
+      ></textarea>
       <br />
       <h5>total map weight: {mapTotalWeight}</h5>
       <h5>
@@ -70,7 +74,11 @@ const printDataToHtml = (
         </div>
       </div>
       {sortedCards.map((c, idx) => (
-        <div key={idx} style={{ display: 'flex' }} disabled={c.reward == 'Disabled'}>
+        <div
+          key={idx}
+          style={{ display: 'flex' }}
+          disabled={c.reward == 'Disabled'}
+        >
           <div style={{ minWidth: '250px' }}>
             <a href={c.ninja} target='_blank' title={c.reward}>
               {c.name} ({c.stack})
@@ -128,8 +136,7 @@ const printDataToHtml = (
   );
 };
 
-export function League({ allCards, setTargetAreas, targetAreas }) {
-  
+export function League({ allCards, allMaps, setTargetAreas, targetAreas }) {
   useEffect(() => {
     async function getTargetAreas() {
       const response = await fetch(
@@ -175,8 +182,7 @@ export function League({ allCards, setTargetAreas, targetAreas }) {
   );
 }
 
-export function Standard({ allCards, setTargetAreas, targetAreas }) {
-
+export function Standard({ allCards, allMaps, setTargetAreas, targetAreas }) {
   useEffect(() => {
     async function getTargetAreas() {
       const response = await fetch(
@@ -210,7 +216,11 @@ export function Standard({ allCards, setTargetAreas, targetAreas }) {
     .map((map) => ({
       name: map,
       res: getCalculatedCards([map], allCards, 'standard'),
-      predicted: getCalculatedCards([...targetAreas, map], allCards, 'standard'),
+      predicted: getCalculatedCards(
+        [...targetAreas, map],
+        allCards,
+        'standard'
+      ),
     }))
     .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
 
@@ -228,8 +238,9 @@ export function Standard({ allCards, setTargetAreas, targetAreas }) {
 }
 
 export default function App() {
-const [allCards, setAllCards] = useState( [] );
-const [targetAreas, setTargetAreas] = useState( [] );
+  const [allCards, setAllCards] = useState([]);
+  const [allMaps, setAllMaps] = useState([]);
+  const [targetAreas, setTargetAreas] = useState([]);
   useEffect(() => {
     async function getAllCards() {
       const response = await fetch('https://poe.stiwoz.cloud/api/cards.json');
@@ -240,14 +251,45 @@ const [targetAreas, setTargetAreas] = useState( [] );
     if (!allCards.length) {
       getAllCards();
     }
+
+    async function getAllMaps() {
+      const response = await fetch('https://poe.stiwoz.cloud/api/maps.json');
+      const data = await response.json();
+      setAllMaps(data);
+    }
+
+    if (!allMaps.length) {
+      getAllMaps();
+    }
   }, []);
 
-  if (!allCards.length) return <div>Loading...</div>;
+  if (!allCards.length || !allMaps.length) return <div>Loading...</div>;
 
   return (
     <Routes>
-      <Route index path='league' element={<League allCards={allCards} targetAreas={targetAreas} setTargetAreas={setTargetAreas}  />} />
-      <Route path='standard' element={<Standard allCards={allCards} targetAreas={targetAreas} setTargetAreas={setTargetAreas} />} />
+      <Route
+        index
+        path='league'
+        element={
+          <League
+            allCards={allCards}
+            allMaps={allMaps}
+            targetAreas={targetAreas}
+            setTargetAreas={setTargetAreas}
+          />
+        }
+      />
+      <Route
+        path='standard'
+        element={
+          <Standard
+            allCards={allCards}
+            allMaps={allMaps}
+            targetAreas={targetAreas}
+            setTargetAreas={setTargetAreas}
+          />
+        }
+      />
       <Route path='*' element={<Navigate to='/league' />} />
     </Routes>
   );
