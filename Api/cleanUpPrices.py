@@ -43,5 +43,5 @@ def prepare_card_data(DEFAULT_WEIGHT, PRICE_FLOOR):
 
         clean_card_data.append(card)
 
-    with open("./temp/prices.json", "w") as file:
+    with open("./data/cards.json", "w") as file:
         json.dump(clean_card_data, file)

@@ -132,7 +132,7 @@ if __name__ == "__main__":
     "Thicket",
     ]
 
-    with open("./temp/prices.json", 'r') as f:
+    with open("./data/cards.json", 'r') as f:
         data = json.load(f)
 
     with open("realWeights.json",'r') as f:

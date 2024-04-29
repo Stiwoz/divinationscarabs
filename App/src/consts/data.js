@@ -1,5 +1,5 @@
 
-export const CARD_PRICE_FLOOR_FILTER = 6;
+export const CARD_PRICE_FLOOR_FILTER = 4;
 export const CARD_WEIGHT_FLOOR_FILTER = 0;
 export const GLOBAL_DROP_RATE = 7954753;
 export const AREA_LEVEL = 83;
