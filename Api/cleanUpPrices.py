@@ -21,7 +21,7 @@ def prepare_card_data(DEFAULT_WEIGHT, PRICE_FLOOR):
         leagueOverride = next((o for o in leagueCardPriceOverrides if o['cardName'] == card['name']), None)
         stdOverride = next((o for o in stdCardPriceOverrides if o['cardName'] == card['name']), None)
 
-        if card.get('reward') == 'Disabled':
+        if card.get('disabled') == True:
             continue
 
         if leagueOverride:

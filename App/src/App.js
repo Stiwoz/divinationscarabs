@@ -68,9 +68,9 @@ const printDataToHtml = (
         </div>
       </div>
       {sortedCards.map((c, idx) => (
-        <div key={idx} style={{ display: 'flex' }}>
+        <div key={idx} style={{ display: 'flex' }} disabled={c.reward == 'Disabled'}>
           <div style={{ minWidth: '250px' }}>
-            <a href={c.ninja} target='_blank'>
+            <a href={c.ninja} target='_blank' title={c.reward}>
               {c.name} ({c.stack})
             </a>
           </div>
