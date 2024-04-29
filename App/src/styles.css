@@ -3,10 +3,9 @@
     text-align: center;
   }
   
-  h5 {
-    margin: 0;
+  h2 {
+    text-transform: capitalize;
   }
-  
-  footer p {
+  h5, footer p {
     margin: 0;
   }

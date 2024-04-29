@@ -5,6 +5,7 @@ import './styles.css';
 import { maps as allMaps } from './consts/maps';
 import { REAL_CARD_RATE, PINNED_DPI } from './consts/data';
 import getCalculatedCards from './func/getCalculatedCards';
+import getHeaderHtml from './func/getHeaderHtml';
 import getFooterHtml from './func/getFooterHtml';
 
 const inputMapsChanged = ( e, setTargetAreas ) => {
@@ -24,10 +25,11 @@ const printDataToHtml = (
   league
 ) => {
     const priceLabel = league.toLowerCase() === 'standard' ? 'standardPrice' : 'price';
-  return (
-    <div
-      style={{ display: 'flex', flexDirection: 'column', overflowX: 'scroll' }}
-    >
+    return (
+        <div
+        style={{ display: 'flex', flexDirection: 'column', overflowX: 'scroll' }}
+        >
+        {getHeaderHtml()}
       <h3>INPUTS</h3>
       <h5>chosen maps:</h5>
       <textarea rows={targetAreas.length} value={targetAreas.join('\n')} onChange={(e)=>inputMapsChanged(e, setTargetAreas)}></textarea>
