@@ -1,47 +1,15 @@
 
-name: 🚀 Deploy on push
+name: 🚀 Deploy Api
 
 on:
   push:
     branches: [main]
+    paths:
+      - Api/*
   workflow_dispatch:
-
+    branches: [main]
 
 jobs:
-
-  Build-Deploy-App:
-    name: 🎉 Deploy App
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    defaults:
-      run:
-        working-directory: ./App
-    env:
-      npm_config_user: root
-    steps:
-
-      - name: 🚚 Get latest code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 10
-          persist-credentials: false
-
-      - name: ⚙️ Install dependancies
-        run: npm ci
-
-      - name: 🛠️ Build React app
-        run: npm run build
-
-      - name: 📂 Sync files
-        uses: Stiwoz/git-sftp-action@master
-        with:
-          username: ${{ secrets.USERNAME }}
-          server: ${{ secrets.HOST }}
-          ssh_private_key: ${{ secrets.SSH_KEY }}
-          local_path: './App/build/*'
-          remote_path: ${{ secrets.PATH }}/public
-          port: 22
-          args: '-o ConnectTimeout=30'
 
   Deploy-Api:
     name: 🎉 Deploy Api
