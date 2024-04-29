@@ -27,7 +27,7 @@ jobs:
           persist-credentials: false
 
       - name: ⚙️ Install dependancies
-        run: npm ci --loglevel verbose
+        run: npm ci
 
       - name: 🛠️ Build React app
         run: npm run build
