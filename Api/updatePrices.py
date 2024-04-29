@@ -42,6 +42,3 @@ def update_prices_json():
 
     with open('./data/cards.json', 'w') as f:
         json.dump(updatedList, f, indent=4)
-
-if __name__ == '__main__':
-    update_prices_json()
