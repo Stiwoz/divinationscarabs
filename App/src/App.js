@@ -26,111 +26,97 @@ const printDataToHtml = (
   const priceLabel =
     league.toLowerCase() === 'standard' ? 'standardPrice' : 'price';
   return (
-    <div
-      style={{ display: 'flex', flexDirection: 'column', overflowX: 'scroll' }}
-    >
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       {getHeaderHtml()}
       <h3>INPUTS</h3>
-      <h5>chosen maps:</h5>
+      <h5>Chosen maps:</h5>
       <textarea
         rows={targetAreas.length}
         value={targetAreas.join('\n')}
         onChange={(e) => inputMapsChanged(e, setTargetAreas)}
       ></textarea>
-      <br />
-      <h5>total map weight: {mapTotalWeight}</h5>
-      <h5>
-        Pinned drop count: {REAL_CARD_RATE.name} {REAL_CARD_RATE.number}
-      </h5>
-      <h5>Pinned drop pool item: {PINNED_DPI}</h5>
-      <h5>drop pool items: {dropPoolItems}</h5>
-      <h5>
-        totalEV: {totalRawEV.toFixed(2)} | totalStackScarabEV:{' '}
-        {totalStackScarabEV.toFixed(2)}
-      </h5>
-      <br />
+      <p>
+        Total map weight: <code>{mapTotalWeight}</code>
+        <br />
+        Pinned drop count:{' '}
+        <code>
+          {REAL_CARD_RATE.name} {REAL_CARD_RATE.number}
+        </code>
+        <br />
+        Pinned drop pool item: <code>{PINNED_DPI}</code>
+        <br />
+        Drop pool items: <code>{dropPoolItems}</code>
+        <br />
+        Total EV: <code>{totalRawEV.toFixed(2)}</code>
+        <br />
+        Total StackScarab EV: <code>{totalStackScarabEV.toFixed(2)}</code>
+      </p>
       <h3>SINGLE CARD EVS</h3>
-      <div style={{ display: 'flex' }}>
-        <div style={{ minWidth: '250px' }}>
-          <h5>Name</h5>
-        </div>
-        <div style={{ minWidth: '100px' }}>
-          <h5>Price (c)</h5>
-        </div>
-        <div style={{ minWidth: '75px' }}>
-          <h5>EV</h5>
-        </div>
-        <div style={{ minWidth: '75px' }}>
-          <h5>SSEV</h5>
-        </div>
-        <div style={{ minWidth: '100px' }}>
-          <h5>Drops per map</h5>
-        </div>
-        <div style={{ minWidth: '100px' }}>
-          <h5>SS Drops per map</h5>
-        </div>
-        <div style={{ minWidth: '150px' }}>
-          <h5>Raw Weight</h5>
-        </div>
-      </div>
-      {sortedCards.map((c, idx) => (
-        <div
-          key={idx}
-          style={{ display: 'flex' }}
-          disabled={c.reward == 'Disabled'}
-        >
-          <div style={{ minWidth: '250px' }}>
-            <a href={c.ninja} target='_blank' title={c.reward}>
-              {c.name} ({c.stack})
-            </a>
-          </div>
-          <div style={{ minWidth: '100px' }}>{c[priceLabel]}</div>
-          <div style={{ minWidth: '75px' }}>{c.rawEV.toFixed(2)}</div>
-          <div style={{ minWidth: '75px' }}>{c.stackScarabEV.toFixed(2)}</div>
-          <div style={{ minWidth: '100px' }}>{c.rawDrops.toFixed(2)}</div>
-          <div style={{ minWidth: '100px' }}>
-            {c.stackScarabDrops.toFixed(2)}
-          </div>
-          <div style={{ minWidth: '150px' }}>{c.weight}</div>
-        </div>
-      ))}
-      <br />
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price (c)</th>
+            <th>EV</th>
+            <th>SSEV</th>
+            <th>Drops per map</th>
+            <th>SS Drops per map</th>
+            <th>Raw Weight</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedCards.map((c, idx) => (
+            <tr key={idx} disabled={c.reward == 'Disabled'}>
+              <td>
+                <a href={c.ninja} target='_blank' title={c.reward}>
+                  {c.name} ({c.stack})
+                </a>
+              </td>
+              <td>{c[priceLabel]}</td>
+              <td>{c.rawEV.toFixed(2)}</td>
+              <td>{c.stackScarabEV.toFixed(2)}</td>
+              <td>{c.rawDrops.toFixed(2)}</td>
+              <td>{c.stackScarabDrops.toFixed(2)}</td>
+              <td>{c.weight}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
       <h3>MAP EVS</h3>
-      <div style={{ display: 'flex' }}>
-        <div style={{ minWidth: '200px' }}>
-          <h5>Map name</h5>
-        </div>
-        <div style={{ minWidth: '150px' }}>
-          <h5>Raw total EV</h5>
-        </div>
-        <div style={{ minWidth: '150px' }}>
-          <h5>Stack Scarab total EV</h5>
-        </div>
-        <div style={{ minWidth: '150px' }}>
-          <h5>Predicted raw total EV</h5>
-        </div>
-        <div style={{ minWidth: '150px' }}>
-          <h5>Predicted ss total EV</h5>
-        </div>
-      </div>
-      {allMapVals.map((m, idx) => {
-        const { name, res, predicted } = m;
-        return (
-          <div key={idx} style={{ display: 'flex' }}>
-            <div style={{ minWidth: '200px' }}>{name}</div>
-            <div style={{ minWidth: '150px' }}>{res.totalRawEV.toFixed(2)}</div>
-            <div style={{ minWidth: '150px' }}>
-              {res.totalStackScarabEV.toFixed(2)}
-            </div>
-            <div style={{ minWidth: '150px' }}>
-              {predicted.totalRawEV.toFixed(2)}
-            </div>
-            <div style={{ minWidth: '150px' }}>
-              {predicted.totalStackScarabEV.toFixed(2)}
-            </div>
-          </div>
-        );
-      })}
+      <table>
+        <thead>
+          <tr>
+            <th>Map name</th>
+            <th>Raw total EV</th>
+            <th>Stack Scarab total EV</th>
+            <th>Predicted raw total EV</th>
+            <th>Predicted ss total EV</th>
+          </tr>
+        </thead>
+        <tbody>
+          {allMapVals.map((m, idx) => {
+            const { name, res, predicted } = m;
+            return (
+              <tr key={idx}>
+                <td>{name}</td>
+                <td>
+                  {res.totalRawEV.toFixed(2)}
+                </td>
+                <td>
+                  {res.totalStackScarabEV.toFixed(2)}
+                </td>
+                <td>
+                  {predicted.totalRawEV.toFixed(2)}
+                </td>
+                <td>
+                  {predicted.totalStackScarabEV.toFixed(2)}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
       {getFooterHtml()}
     </div>
   );

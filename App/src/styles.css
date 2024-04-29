@@ -1,11 +1,11 @@
-.App {
-    font-family: sans-serif;
-    text-align: center;
-  }
-  
-  h2 {
-    text-transform: capitalize;
-  }
-  h5, footer p {
+body {
+    grid-template-columns: 1fr min(60rem, 90%) 1fr;
+}
+
+h5, footer p {
     margin: 0;
-  }
+}
+
+.capitalized {
+    text-transform: capitalize;
+}
