@@ -26,7 +26,7 @@ const printDataToHtml = (
   const priceLabel =
     league.toLowerCase() === 'standard' ? 'standardPrice' : 'price';
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <>
       {getHeaderHtml()}
       <h3>INPUTS</h3>
       <h5>Chosen maps:</h5>
@@ -111,7 +111,7 @@ const printDataToHtml = (
         </tbody>
       </table>
       {getFooterHtml()}
-    </div>
+    </>
   );
 };
 
