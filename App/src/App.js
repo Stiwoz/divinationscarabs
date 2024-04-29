@@ -1,200 +1,10 @@
-import { maps as allMaps } from './consts/maps';
-import { Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { maps as allMaps } from './consts/maps';
 import './styles.css';
 
-const CARD_PRICE_FLOOR_FILTER = 6;
-const CARD_WEIGHT_FLOOR_FILTER = 0;
-const GLOBAL_DROP_RATE = 7954753;
-const AREA_LEVEL = 83;
-const USE_FORCE_REMOVE_FILTER = true;
-const USE_FORCE_SHOW_FILTER = true;
-const FORCE_REMOVE_V_FILTER = new Set([]);
-const FORCE_REMOVE_FILTER = new Set([
-  'The Easy Stroll',
-  'Three Faces in the Dark',
-  'The Lunaris Priestess',
-  'The Explorer',
-  'The Mountain',
-  'Boundless Realms',
-  'Azure Rage',
-  'Left to Fate',
-  'Might is Right',
-  'Scholar of the Seas',
-  'Grave Knowledge',
-  'The Wolverine',
-  'Blind Venture',
-  "Hunter's Resolve",
-  "Alivia's Grace",
-  'The Admirer',
-  'The Surgeon',
-  "The Wolf's Shadow",
-  'Shard of Fate',
-  'Jack in the Box',
-  'Last Hope',
-  'Mitts',
-  'The Battle Born',
-  'The Sun',
-  'The Demoness',
-  'The Sigil',
-  'The Twins',
-  'The Inoculated',
-  'The Army of Blood',
-  'The Visionary',
-  'The Gladiator',
-  "Gemcutter's Promise",
-  'The Web',
-  "The Sword King's Salute",
-  'Boon of Justice',
-  'The Penitent',
-  'The Warden',
-  'The Cache',
-  "Lysah's Respite",
-  'The Fathomless Depths',
-  'The Harvester',
-  'The Fox',
-  'Volatile Power',
-  'The Endurance',
-  'The Wolf',
-  'Time-Lost Relic',
-  'The Rite of Elements',
-  'Gift of the Gemling Queen',
-  'The Standoff',
-  'Prosperity',
-  'Heterochromia',
-  'The Insatiable',
-  'The Incantation',
-  'The Betrayal',
-  'The Pack Leader',
-  'The Oath',
-  'Vile Power',
-  'The Surveyor',
-  'Thunderous Skies',
-  'The Tower',
-  'The Stormcaller',
-  'The Opulent',
-  'The Blazing Fire',
-  'The Journalist',
-  "The Jeweller's Boon",
-  'The Survivalist',
-  'Glimmer of Hope',
-  'Destined to Crumble',
-  'The Scholar',
-  'Thirst for Knowledge',
-  "Emperor's Luck",
-  'Loyalty',
-  'A Sea of Blue',
-  'The Lover',
-  "The King's Blade",
-  'The Catalyst',
-  "Lantador's Lost Love",
-  'The Scarred Meadow',
-  'Rats',
-  'The Witch',
-  'Three Voices',
-  "The Dragon's Heart",
-  'Cursed Words',
-]);
-const FORCE_SHOW_FILTER = new Set([
-  'The Primordial',
-  'Coveted Possession',
-  'The Chains that Bind',
-  'The Union',
-  'The Wrath',
-  'No Traces',
-  'Lingering Remnants',
-  "Bowyer's Dream",
-  'Draped in Dreams',
-  'Immortal Resolve',
-  'The Celestial Justicar',
-  'The Porcupine',
-  'The Innocent',
-]);
-const REAL_CARD_RATE = { name: 'The Union', number: 38 };
-const PINNED_DPI = 61482.640295231180216993095674228;
-
-const isCardInArea = (card, areas) => {
-  let val = false;
-  areas.forEach((area) => {
-    if (
-      (card.drop?.max_level ?? 100) >= AREA_LEVEL &&
-      (card.drop?.areas ?? []).includes(`MapWorlds${area}`)
-    )
-      val = true;
-  });
-  return val;
-};
-
-const calculateCardEV = (stack, cardCount, price, useStackScarab) => {
-  let ev = 0;
-  let drops = cardCount;
-  if (useStackScarab) {
-    ev = cardCount * 0.2 * stack * price + cardCount * 0.8 * price;
-    drops = cardCount * 0.2 * stack + cardCount * 0.8;
-  } else {
-    ev = cardCount * price;
-  }
-  return { ev, drops };
-};
-
-const getCalculatedCards = (areas, allCards) => {
-  let totalRawEV = 0;
-  let totalStackScarabEV = 0;
-
-  // filter down to cards in map
-  const mapCards = allCards.filter((card) => isCardInArea(card, areas));
-
-  // calculate drop pool items
-  const mapTotalWeight = mapCards.reduce(
-    (acc, card) => acc + (card.weight ?? 0),
-    0
-  );
-  const cardWeightBaseline = allCards.find(
-    (card) => card.name === REAL_CARD_RATE.name
-  ).weight;
-  const currentTotalWeight = mapTotalWeight + GLOBAL_DROP_RATE;
-  const dropPoolItems =
-    (1 / (cardWeightBaseline / currentTotalWeight)) * REAL_CARD_RATE.number;
-  const dpiMultiplier = (PINNED_DPI ?? dropPoolItems) / dropPoolItems;
-
-  // filter all cards based on various conditions
-  const filteredCards = mapCards.filter(
-    (card) =>
-      (card.price >= CARD_PRICE_FLOOR_FILTER &&
-        !FORCE_REMOVE_V_FILTER.has(card.name) &&
-        (!FORCE_REMOVE_FILTER.has(card.name) || !USE_FORCE_REMOVE_FILTER) &&
-        card.weight !== undefined &&
-        card.weight > CARD_WEIGHT_FLOOR_FILTER) ||
-      (FORCE_SHOW_FILTER.has(card.name) && USE_FORCE_SHOW_FILTER)
-  );
-
-  const res = filteredCards.map((card) => {
-    // calculate individual card drop rate
-    const individualDropRate =
-      (card.weight / currentTotalWeight) * dropPoolItems;
-    const dropsPerMap = individualDropRate * dpiMultiplier;
-    // calculate EVs
-    const rawEV = calculateCardEV(card.stack, dropsPerMap, card.price, false);
-    totalRawEV += rawEV.ev;
-    const ssEV = calculateCardEV(card.stack, dropsPerMap, card.price, true);
-    totalStackScarabEV += ssEV.ev;
-    return {
-      ...card,
-      rawDrops: rawEV.drops,
-      stackScarabDrops: ssEV.drops,
-      rawEV: rawEV.ev,
-      stackScarabEV: ssEV.ev,
-    };
-  });
-
-  return {
-    mapTotalWeight,
-    dropPoolItems,
-    totalRawEV,
-    totalStackScarabEV,
-    cards: res,
-  };
-};
+import getCalculatedCards from './func/getCalculatedCards';
+import { REAL_CARD_RATE, PINNED_DPI } from './consts/data';
 
 const printDataToHtml = (
   targetAreas,
@@ -304,6 +114,16 @@ const printDataToHtml = (
           </div>
         );
       })}
+      <footer style={{ marginTop: '60px' }}>
+        <p>Credits to ABodyPillow, DKrizere & deathbeam for the <a target='_blank' href='https://6jtcys.csb.app/'>original tool</a></p>
+        <p>Credits to <a target='_blank' href='https://www.twitch.tv/snapow'>Snap</a>, <a target='_blank' href='https://www.twitch.tv/empyriangaming'>Empy</a> and their whole group for the work they put into the original tool and the data it uses</p>
+        <p>Credits to <a target='_blank' href="https://github.com/nerdyjoe314">nerdyjoe314</a> for the <a target='_blank' href='https://github.com/nerdyjoe314/divinationscarabs'>original algorithm</a> used to calculate the best maps to use</p>
+        <p>Card prices and weightings taken from <a target='_blank' href='https://poe.ninja/'>Poe Ninja</a></p>
+        <p>Thanks to <a target='_blank' href='https://www.twitch.tv/dapanotv'>DapanoTV</a> for triggering my autism and making me do this :)</p>
+        <p>
+          <a target='_blank' href='https://github.com/Stiwoz/poe.stiwoz.cloud'>Source code</a>
+        </p>
+      </footer>
     </div>
   );
 };
