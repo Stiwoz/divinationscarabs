@@ -1,4 +1,4 @@
-export default function getFooterHtml () {
+export default function Footer () {
     return (
         <footer style={{ marginTop: '60px' }}>
             <p>

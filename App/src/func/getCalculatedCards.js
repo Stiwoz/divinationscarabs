@@ -1,15 +1,20 @@
 import calculateCardEV from './calculateCardEV';
 import isCardInArea from './isCardInArea';
 import {
-    CARD_PRICE_FLOOR_FILTER,
-    CARD_WEIGHT_FLOOR_FILTER,
-    FORCE_REMOVE_V_FILTER,
-    FORCE_SHOW_FILTER,
-    GLOBAL_DROP_RATE,
-    USE_FORCE_SHOW_FILTER,
+  CARD_PRICE_FLOOR_FILTER,
+  CARD_WEIGHT_FLOOR_FILTER,
+  FORCE_REMOVE_V_FILTER,
+  FORCE_SHOW_FILTER,
+  GLOBAL_DROP_RATE,
+  USE_FORCE_SHOW_FILTER,
 } from '../consts/data';
 
-export default function getCalculatedCards(areas, allCards, league, realCardRate, pinnedDpi) {
+export default function getCalculatedCards(
+  areas,
+  allCards,
+  league,
+  realCardRate
+) {
   let totalRawEV = 0;
   let totalStackScarabEV = 0;
 
@@ -27,9 +32,9 @@ export default function getCalculatedCards(areas, allCards, league, realCardRate
   const currentTotalWeight = mapTotalWeight + GLOBAL_DROP_RATE;
   const dropPoolItems =
     (1 / (cardWeightBaseline / currentTotalWeight)) * realCardRate.number;
-    const dpiMultiplier = (pinnedDpi ?? dropPoolItems) / dropPoolItems;
 
-  const priceLabel = league.toLowerCase() === 'standard' ? 'standardPrice' : 'price';
+  const priceLabel =
+    league.toLowerCase() === 'standard' ? 'standardPrice' : 'price';
   // filter all cards based on various conditions
   const filteredCards = mapCards.filter(
     (card) =>
@@ -44,13 +49,22 @@ export default function getCalculatedCards(areas, allCards, league, realCardRate
     // calculate individual card drop rate
     const individualDropRate =
       (card.weight / currentTotalWeight) * dropPoolItems;
-      const dropsPerMap = individualDropRate * dpiMultiplier;
     // calculate EVs
-    const rawEV = calculateCardEV(card.stack, dropsPerMap, card[priceLabel], false);
+    const rawEV = calculateCardEV(
+      card.stack,
+      individualDropRate,
+      card[priceLabel],
+      false
+    );
     totalRawEV += rawEV.ev;
-    const ssEV = calculateCardEV(card.stack, dropsPerMap, card[priceLabel], true);
-      totalStackScarabEV += ssEV.ev;
-      
+    const ssEV = calculateCardEV(
+      card.stack,
+      individualDropRate,
+      card[priceLabel],
+      true
+    );
+    totalStackScarabEV += ssEV.ev;
+
     return {
       ...card,
       rawDrops: rawEV.drops,
