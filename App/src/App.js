@@ -32,7 +32,8 @@ const printDataToHtml = (
     calculatedCards;
   const priceLabel =
     league.toLowerCase() === 'standard' ? 'standardPrice' : 'price';
-  const poeNinjaUrl = league === 'standard' ? 'standard' : 'challenge';
+    const poeNinjaUrl = league === 'standard' ? 'standard' : 'challenge';
+
   return (
     <>
       {getHeaderHtml(league)}
@@ -49,10 +50,10 @@ const printDataToHtml = (
         <div>
           Pinned drop count card:{' '}
           <a
-            href={`https://poe.ninja/${poeNinjaUrl}/divination-cards/the-union`}
+            href={`https://poe.ninja/${poeNinjaUrl}/divination-cards/${realCardRate.name.toLowerCase().replace(' ', '-')}`}
             target='_blank'
           >
-            The Union (7)
+            {realCardRate.name} ({realCardRate.name == 'The Union' ? 7 : 5})
           </a>
           <br />
           {/* <div className='radio-wrapper'>

@@ -4,6 +4,7 @@ body {
 
 main {
     padding: 0;
+    font-size: 1.05rem;
 }
 
 h5, footer p {
@@ -15,12 +16,20 @@ small {
     display: block;
 }
 
+table {
+    width: 100%;
+}
+
 table tr:hover {
     background: hsl(0, 0%, 15%); /* Lighten the background color by 2%*/
 }
 
 table tr:nth-child(2n):hover {
     background: hsl(0, 0%, 19%); /* Lighten the background color by 2%*/
+}
+
+table tr td {
+    padding: .2rem .5rem;
 }
 .capitalized {
     text-transform: capitalize;
