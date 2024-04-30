@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import './styles.css';
 
-import { REAL_CARD_RATE, PINNED_DPI } from './consts/data';
+import {
+  REAL_CARD_RATE_DEFAULT,
+  PINNED_DPI,
+  GLOBAL_DROP_RATE,
+} from './consts/data';
 import getCalculatedCards from './func/getCalculatedCards';
 import getHeaderHtml from './func/getHeaderHtml';
 import getFooterHtml from './func/getFooterHtml';
@@ -15,19 +19,23 @@ const inputMapsChanged = (e, setTargetAreas) => {
 const printDataToHtml = (
   targetAreas,
   setTargetAreas,
-  mapTotalWeight,
-  dropPoolItems,
-  totalRawEV,
-  totalStackScarabEV,
+  realCardRate,
+  setRealCardRate,
+  pinnedDpi,
+  setPinnedDpi,
+  calculatedCards,
   sortedCards,
   allMapVals,
   league
 ) => {
+  const { mapTotalWeight, dropPoolItems, totalRawEV, totalStackScarabEV } =
+    calculatedCards;
   const priceLabel =
     league.toLowerCase() === 'standard' ? 'standardPrice' : 'price';
+  const poeNinjaUrl = league === 'standard' ? 'standard' : 'challenge';
   return (
     <>
-      {getHeaderHtml()}
+      {getHeaderHtml(league)}
       <h3>INPUTS</h3>
       <h5>Chosen maps:</h5>
       <textarea
@@ -36,22 +44,77 @@ const printDataToHtml = (
         value={targetAreas.join('\n')}
         onChange={(e) => inputMapsChanged(e, setTargetAreas)}
       ></textarea>
-      <p>
-        Total map weight: <code>{mapTotalWeight}</code>
-        <br />
-        Pinned drop count:{' '}
-        <code>
-          {REAL_CARD_RATE.name} {REAL_CARD_RATE.number}
-        </code>
-        <br />
-        Pinned drop pool item: <code>{PINNED_DPI}</code>
-        <br />
-        Drop pool items: <code>{dropPoolItems}</code>
-        <br />
-        Total EV: <code>{totalRawEV.toFixed(2)}</code>
-        <br />
-        Total StackScarab EV: <code>{totalStackScarabEV.toFixed(2)}</code>
-      </p>
+
+      <form>
+        <div>
+          Pinned drop count card:{' '}
+          <a
+            href={`https://poe.ninja/${poeNinjaUrl}/divination-cards/the-union`}
+            target='_blank'
+          >
+            The Union (7)
+          </a>
+          <br />
+          {/* <div className='radio-wrapper'>
+            <input
+              type='radio'
+              id='The Gambler'
+              name='real_card_rate_name'
+              value='The Gambler'
+              checked={realCardRate.name == 'The Gambler'}
+              onChange={(e) =>
+                setRealCardRate({ ...realCardRate, name: e.target.value })
+              }
+            />
+            <label htmlFor='The Gambler'>&nbsp;The Gambler</label>
+          </div>
+          <div className='radio-wrapper'>
+            <input
+              type='radio'
+              id='The Union'
+              name='real_card_rate_name'
+              value='The Union'
+              checked={realCardRate.name == 'The Union'}
+              onChange={(e) =>
+                setRealCardRate({ ...realCardRate, name: e.target.value })
+              }
+            />
+            <label htmlFor='The Union'>&nbsp;The Union</label>
+          </div> */}
+          Pinned drop count ammount: <code>{realCardRate.number}</code>
+          {/* <input
+            type='number'
+            id='rate_number'
+            name='rate_number'
+            min='1'
+            value={realCardRate.number}
+            onChange={(e) =>
+              setRealCardRate({ ...realCardRate, number: e.target.value })
+            }
+          /> */}
+          <br />
+          Pinned drop pool item: <code>{pinnedDpi}</code>
+          {/* <input
+            type='number'
+            id='pinned_dpi'
+            name='pinned_dpi'
+            min='1'
+            value={pinnedDpi}
+            onChange={(e) => setPinnedDpi(e.target.value)}
+          /> */}
+          <br />
+          Drop pool items: <code>{dropPoolItems}</code>
+          <br />
+          Total map weight: <code>{mapTotalWeight}</code>
+          <br />
+          Total EV: <code>{totalRawEV.toFixed(2)}</code>
+          <br />
+          Total StackScarab EV: <code>{totalStackScarabEV.toFixed(2)}</code>
+          <br />
+          Global drop rate: <code>{GLOBAL_DROP_RATE}</code>
+        </div>
+      </form>
+
       <h3>SINGLE CARD EVS</h3>
       <table>
         <thead>
@@ -116,53 +179,21 @@ const printDataToHtml = (
   );
 };
 
-export function League({ allCards, allMaps, setTargetAreas, targetAreas }) {
-  useEffect(() => {
-    async function getTargetAreas() {
-      const response = await fetch(
-        'https://poe.stiwoz.cloud/api/league_maps.json'
-      );
-      const data = await response.json();
-      setTargetAreas(data);
-    }
+export function Main({
+  allCards,
+  allMaps,
+  setTargetAreas,
+  targetAreas,
+  setRealCardRate,
+  realCardRate,
+  pinnedDpi,
+  setPinnedDpi,
+  league,
+}) {
+  const [calculatedCards, setCalculatedCards] = useState({});
+  const [sortedCards, setSortedCards] = useState([]);
+  const [allMapVals, setAllMapVals] = useState([]);
 
-    if (!targetAreas.length) {
-      getTargetAreas();
-    }
-  }, []);
-
-  if (!targetAreas.length) return <div>Loading...</div>;
-
-  const {
-    mapTotalWeight,
-    dropPoolItems,
-    cards: rawCards,
-    totalRawEV,
-    totalStackScarabEV,
-  } = getCalculatedCards(targetAreas, allCards, 'league');
-  const sortedCards = rawCards.sort((a, b) => b.rawEV - a.rawEV);
-  const allMapVals = allMaps
-    .map((map) => ({
-      name: map,
-      res: getCalculatedCards([map], allCards, 'league'),
-      predicted: getCalculatedCards([...targetAreas, map], allCards, 'league'),
-    }))
-    .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
-
-  return printDataToHtml(
-    targetAreas,
-    setTargetAreas,
-    mapTotalWeight,
-    dropPoolItems,
-    totalRawEV,
-    totalStackScarabEV,
-    sortedCards,
-    allMapVals,
-    'league'
-  );
-}
-
-export function Standard({ allCards, allMaps, setTargetAreas, targetAreas }) {
   useEffect(() => {
     async function getTargetAreas() {
       const response = await fetch(
@@ -177,43 +208,63 @@ export function Standard({ allCards, allMaps, setTargetAreas, targetAreas }) {
     }
   }, []);
 
-  if (!targetAreas.length) return <div>Loading...</div>;
+    useEffect( () => {
+      if ( !targetAreas.length ) return;
+    const calculatedCards = getCalculatedCards(
+      targetAreas,
+      allCards,
+      league,
+      realCardRate,
+      pinnedDpi
+    );
+    setCalculatedCards(calculatedCards);
 
-  const {
-    mapTotalWeight,
-    dropPoolItems,
-    cards: rawCards,
-    totalRawEV,
-    totalStackScarabEV,
-  } = getCalculatedCards(targetAreas, allCards, 'standard');
-  const sortedCards = rawCards
-    .sort((a, b) => b.rawEV - a.rawEV)
-    .map((c) => ({
-      ...c,
-      ninja: c.ninja.replace('challenge', 'standard'),
-    }));
-  const allMapVals = allMaps
-    .map((map) => ({
-      name: map,
-      res: getCalculatedCards([map], allCards, 'standard'),
-      predicted: getCalculatedCards(
-        [...targetAreas, map],
-        allCards,
-        'standard'
-      ),
-    }))
-    .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
+    const sortedCards = calculatedCards.cards
+      .sort((a, b) => b.rawEV - a.rawEV)
+      .map((c) => ({
+        ...c,
+        ninja:
+          league !== 'standard'
+            ? c.ninja
+            : c.ninja.replace('challenge', league),
+      }));
+    setSortedCards(sortedCards);
 
+    const allMapVals = allMaps
+      .map((map) => ({
+        name: map,
+        res: getCalculatedCards(
+          [map],
+          allCards,
+          league,
+          realCardRate,
+          pinnedDpi
+        ),
+        predicted: getCalculatedCards(
+          [...targetAreas, map],
+          allCards,
+          league,
+          realCardRate,
+          pinnedDpi
+        ),
+      }))
+      .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
+    setAllMapVals(allMapVals);
+  }, [targetAreas]);
+
+if ( !targetAreas.length || !calculatedCards.cards  ) return <div>Loading...</div>;
+    
   return printDataToHtml(
     targetAreas,
     setTargetAreas,
-    mapTotalWeight,
-    dropPoolItems,
-    totalRawEV,
-    totalStackScarabEV,
+    realCardRate,
+    setRealCardRate,
+    pinnedDpi,
+    setPinnedDpi,
+    calculatedCards,
     sortedCards,
     allMapVals,
-    'standard'
+    league
   );
 }
 
@@ -221,6 +272,11 @@ export default function App() {
   const [allCards, setAllCards] = useState([]);
   const [allMaps, setAllMaps] = useState([]);
   const [targetAreas, setTargetAreas] = useState([]);
+  const [realCardRate, setRealCardRate] = useState(REAL_CARD_RATE_DEFAULT);
+  const [pinnedDpi, setPinnedDpi] = useState(PINNED_DPI);
+  const { pathname } = useLocation();
+  const league = pathname.replace('/', '');
+
   useEffect(() => {
     async function getAllCards() {
       const response = await fetch('https://poe.stiwoz.cloud/api/cards.json');
@@ -231,7 +287,9 @@ export default function App() {
     if (!allCards.length) {
       getAllCards();
     }
+  }, []);
 
+  useEffect(() => {
     async function getAllMaps() {
       const response = await fetch('https://poe.stiwoz.cloud/api/maps.json');
       const data = await response.json();
@@ -251,22 +309,32 @@ export default function App() {
         index
         path='league'
         element={
-          <League
+          <Main
+            league={league}
             allCards={allCards}
             allMaps={allMaps}
             targetAreas={targetAreas}
             setTargetAreas={setTargetAreas}
+            realCardRate={realCardRate}
+            setRealCardRate={setRealCardRate}
+            pinnedDpi={pinnedDpi}
+            setPinnedDpi={setPinnedDpi}
           />
         }
       />
       <Route
         path='standard'
         element={
-          <Standard
+          <Main
+            league={league}
             allCards={allCards}
             allMaps={allMaps}
             targetAreas={targetAreas}
             setTargetAreas={setTargetAreas}
+            realCardRate={realCardRate}
+            setRealCardRate={setRealCardRate}
+            pinnedDpi={pinnedDpi}
+            setPinnedDpi={setPinnedDpi}
           />
         }
       />

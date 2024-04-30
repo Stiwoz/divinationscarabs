@@ -3,17 +3,13 @@ import isCardInArea from './isCardInArea';
 import {
     CARD_PRICE_FLOOR_FILTER,
     CARD_WEIGHT_FLOOR_FILTER,
-    FORCE_REMOVE_FILTER,
     FORCE_REMOVE_V_FILTER,
     FORCE_SHOW_FILTER,
     GLOBAL_DROP_RATE,
-    PINNED_DPI,
-    REAL_CARD_RATE,
-    USE_FORCE_REMOVE_FILTER,
     USE_FORCE_SHOW_FILTER,
 } from '../consts/data';
 
-export default function getCalculatedCards(areas, allCards, league) {
+export default function getCalculatedCards(areas, allCards, league, realCardRate, pinnedDpi) {
   let totalRawEV = 0;
   let totalStackScarabEV = 0;
 
@@ -26,12 +22,12 @@ export default function getCalculatedCards(areas, allCards, league) {
     0
   );
   const cardWeightBaseline = allCards.find(
-    (card) => card.name === REAL_CARD_RATE.name
+    (card) => card.name === realCardRate.name
   ).weight;
   const currentTotalWeight = mapTotalWeight + GLOBAL_DROP_RATE;
   const dropPoolItems =
-    (1 / (cardWeightBaseline / currentTotalWeight)) * REAL_CARD_RATE.number;
-  const dpiMultiplier = (PINNED_DPI ?? dropPoolItems) / dropPoolItems;
+    (1 / (cardWeightBaseline / currentTotalWeight)) * realCardRate.number;
+    const dpiMultiplier = (pinnedDpi ?? dropPoolItems) / dropPoolItems;
 
   const priceLabel = league.toLowerCase() === 'standard' ? 'standardPrice' : 'price';
   // filter all cards based on various conditions
@@ -39,7 +35,6 @@ export default function getCalculatedCards(areas, allCards, league) {
     (card) =>
       (card[priceLabel] >= CARD_PRICE_FLOOR_FILTER &&
         !FORCE_REMOVE_V_FILTER.has(card.name) &&
-        (!FORCE_REMOVE_FILTER.has(card.name) || !USE_FORCE_REMOVE_FILTER) &&
         card.weight !== undefined &&
         card.weight > CARD_WEIGHT_FLOOR_FILTER) ||
       (FORCE_SHOW_FILTER.has(card.name) && USE_FORCE_SHOW_FILTER)
@@ -49,7 +44,7 @@ export default function getCalculatedCards(areas, allCards, league) {
     // calculate individual card drop rate
     const individualDropRate =
       (card.weight / currentTotalWeight) * dropPoolItems;
-    const dropsPerMap = individualDropRate * dpiMultiplier;
+      const dropsPerMap = individualDropRate * dpiMultiplier;
     // calculate EVs
     const rawEV = calculateCardEV(card.stack, dropsPerMap, card[priceLabel], false);
     totalRawEV += rawEV.ev;
