@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 
 import { REAL_CARD_RATE_DEFAULT } from '../consts/data';
 import getCalculatedCards from '../func/getCalculatedCards';
-import printDataToHtml from '../func/printDataToHtml';
+import Footer from './Footer';
+import Header from './Header';
+import MapEVsTable from './MapEVsTable';
+import SingleCardEVsTable from './SingleCardEVsTable';
+import DataInput from './DataInput';
 
 export default function Main({ allCards, allMaps, league }) {
   const [calculatedCards, setCalculatedCards] = useState({});
@@ -10,6 +14,16 @@ export default function Main({ allCards, allMaps, league }) {
   const [allMapVals, setAllMapVals] = useState([]);
   const [targetAreas, setTargetAreas] = useState([]);
   const [realCardRate, setRealCardRate] = useState(REAL_CARD_RATE_DEFAULT);
+
+  const updateSelectedCardRate = (e) => {
+    const name = e.target.value;
+    const card = allCards.find((c) => c.name === name);
+    setRealCardRate({ ...realCardRate, ...card });
+  };
+
+  const updateSelectedCardRateQt = (e) => {
+    setRealCardRate({ ...realCardRate, number: e.target.value });
+  };
 
   useEffect(() => {
     async function getTargetAreas() {
@@ -60,19 +74,26 @@ export default function Main({ allCards, allMaps, league }) {
       }))
       .sort((a, b) => b.predicted.totalRawEV - a.predicted.totalRawEV);
     setAllMapVals(allMapVals);
-  }, [targetAreas, realCardRate, allCards, league]);
+  }, [targetAreas, realCardRate, allCards]);
 
   if (!targetAreas.length || !calculatedCards.cards)
     return <div>Loading...</div>;
 
-  return printDataToHtml(
-    targetAreas,
-    setTargetAreas,
-    realCardRate,
-    setRealCardRate,
-    calculatedCards,
-    sortedCards,
-    allMapVals,
-    league
+  return (
+    <>
+      <Header league={league} />
+      <DataInput
+        league={league}
+        targetAreas={targetAreas}
+        realCardRate={realCardRate}
+        calculatedCards={calculatedCards}
+        setRealCardRate={updateSelectedCardRate}
+        setRealCardRateQt={updateSelectedCardRateQt}
+        setTargetAreas={setTargetAreas}
+      />
+      <SingleCardEVsTable league={league} sortedCards={sortedCards} />
+      <MapEVsTable allMapVals={allMapVals} />
+      <Footer />
+    </>
   );
 }

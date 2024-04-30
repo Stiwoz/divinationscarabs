@@ -25,5 +25,5 @@ export const FORCE_SHOW_FILTER = new Set([
   'Fire Of Unknown Origin',
   'The Innocent',
 ]);
-export const REAL_CARD_RATE_DEFAULT = { name: 'The Union', number: 38 };
+export const REAL_CARD_RATE_DEFAULT = { name: 'The Union', number: 38, stack: 7 };
 export const PINNED_DPI = 61482.640295231180216993095674228;
