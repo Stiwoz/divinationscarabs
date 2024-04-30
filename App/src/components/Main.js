@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { REAL_CARD_RATE_DEFAULT } from '../consts/data';
 import getCalculatedCards from '../func/getCalculatedCards';
+import isCardInArea from '../func/isCardInArea';
 import Footer from './Footer';
 import Header from './Header';
 import MapEVsTable from './MapEVsTable';
@@ -14,10 +15,12 @@ export default function Main({ allCards, allMaps, league }) {
   const [allMapVals, setAllMapVals] = useState([]);
   const [targetAreas, setTargetAreas] = useState([]);
   const [realCardRate, setRealCardRate] = useState(REAL_CARD_RATE_DEFAULT);
+  const [mapCards, setMapCards] = useState([]);
 
   const updateSelectedCardRate = (e) => {
     const name = e.target.value;
     const card = allCards.find((c) => c.name === name);
+    console.log(card);
     setRealCardRate({ ...realCardRate, ...card });
   };
 
@@ -76,6 +79,12 @@ export default function Main({ allCards, allMaps, league }) {
     setAllMapVals(allMapVals);
   }, [targetAreas, realCardRate, allCards]);
 
+  useEffect(() => {
+    if (!targetAreas.length) return;
+    const mapCards = allCards.filter((card) => isCardInArea(card, targetAreas));
+    setMapCards(mapCards);
+  }, [targetAreas, allCards]);
+
   if (!targetAreas.length || !calculatedCards.cards)
     return <div>Loading...</div>;
 
@@ -84,6 +93,7 @@ export default function Main({ allCards, allMaps, league }) {
       <Header league={league} />
       <DataInput
         league={league}
+        mapCards={mapCards}
         targetAreas={targetAreas}
         realCardRate={realCardRate}
         calculatedCards={calculatedCards}

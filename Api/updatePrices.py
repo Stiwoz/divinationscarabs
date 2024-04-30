@@ -30,7 +30,13 @@ def update_prices_json():
         updatedCard = card.copy()
         updatedCard['standardPrice'] = stdCard['chaosValue'] if stdCard else 0.0
         updatedCard['price'] = leagueCard['chaosValue'] if leagueCard else 0.0
-        updatedCard['weight'] = weights[0][card['name']] if card['name'] in weights[0] else 0.0
+
+        if (not 'weight' in card or card['weight'] == 0) and card['name'] in weights[0]:
+            updatedCard['weight'] = weights[0][card['name']]
+        
+        if updatedCard['weight'] == 0:
+            # Fallback to not have Infinity as calculated EVs
+            updatedCard['weight'] = 0.0001
 
         isDisabled = False
         for explicit in stdCard['explicitModifiers'] if stdCard else []:
