@@ -14,7 +14,7 @@ def update_prices_json():
     with open('./data/cards.json') as f:
         cards = json.load(f)
     
-    with open('./realWeights.json') as f:
+    with open('./data/real_weights.json') as f:
         weights = json.load(f)
     
     with open('./data/card_blacklist.json') as f:

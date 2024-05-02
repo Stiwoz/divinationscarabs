@@ -35,7 +35,7 @@ if __name__ == "__main__":
     with open("./data/cards.json", 'r') as f:
         data = json.load(f)
 
-    with open("realWeights.json",'r') as f:
+    with open("./data/real_weights.json",'r') as f:
         weights = json.load(f)
 
     t_name_array = []

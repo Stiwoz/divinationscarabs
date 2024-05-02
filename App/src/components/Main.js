@@ -20,7 +20,6 @@ export default function Main({ allCards, allMaps, league }) {
   const updateSelectedCardRate = (e) => {
     const name = e.target.value;
     const card = allCards.find((c) => c.name === name);
-    console.log(card);
     setRealCardRate({ ...realCardRate, ...card });
   };
 
@@ -83,6 +82,21 @@ export default function Main({ allCards, allMaps, league }) {
     if (!targetAreas.length) return;
     const mapCards = allCards.filter((card) => isCardInArea(card, targetAreas));
     setMapCards(mapCards);
+
+    if (mapCards.length) {
+      const union = mapCards.find((card) => card.name === 'The Union');
+      const gambler = mapCards.find((card) => card.name === 'The Gambler');
+      const wrath = mapCards.find((card) => card.name === 'The Wrath');
+      if (union) {
+        setRealCardRate({ ...realCardRate, ...union });
+      } else if (gambler) {
+        setRealCardRate({ ...realCardRate, ...gambler });
+      } else if (wrath) {
+        setRealCardRate({ ...realCardRate, ...wrath });
+      } else {
+        setRealCardRate({ ...realCardRate, ...mapCards[0] });
+      }
+    }
   }, [targetAreas, allCards]);
 
   if (!targetAreas.length || !calculatedCards.cards)
