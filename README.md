@@ -12,7 +12,7 @@ This list is the used to compute the best possible selection of favourite maps. 
 
 These 12 maps are then combined with an example card of choice and the average quantity dropped in your maps (by default either [The Gambler](https://poe.ninja/economy/standard/divination-cards/the-gambler), [The Union](https://poe.ninja/economy/standard/divination-cards/the-union) or [The Wrath](https://poe.ninja/economy/standard/divination-cards/the-wrath) because of their well-known droprate and weight) to calculate the estimated droprates and Effective Values (EVs) of all the other droppable cards.
 
-All the shown data is divided in "with Stack Scarab (SS)" and "without SS (Stack Scarab being the aforementioned Divination Scarab of Completion).
+All the shown data is divided in "with Stack Scarab (SS)" and "without SS" (Stack Scarab being the aforementioned Divination Scarab of Completion).
 
 ## Credits
 
