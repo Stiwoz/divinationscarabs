@@ -1,134 +1,154 @@
 [
-	{
-		"cardName": "Humility",
-		"cardValue": 0.25
-	},
-	{
-		"cardName": "Vanity",
-		"cardValue": 0.55
-	},
-	{
-		"cardName": "The Chains that Bind",
-		"cardValue": 0.33
-	},
-	{
-		"cardName": "Loyalty",
-		"cardValue": 0.2
-	},
-	{
-		"cardName": "The Porcupine",
-		"cardValue": 0.33
-	},
-	{
-		"cardName": "Imperial Legacy",
-		"cardValue": 0.25
-	},
-	{
-		"cardName": "The Celestial Justicar",
-		"cardValue": 0.83
-	},
-	{
-		"cardName": "The Dapper Prodigy",
-		"cardValue": 0.83
-	},
-	{
-		"cardName": "Emperor of Purity",
-		"cardValue": 0.71
-	},
-	{
-		"cardName": "Vinia's Token",
-		"cardValue": 1
-	},
-	{
-		"cardName": "Acclimatisation",
-		"cardValue": 1
-	},
-	{
-		"cardName": "The Primordial",
-		"cardValue": 1.22
-	},
-	{
-		"cardName": "Three Faces in the Dark",
-		"cardValue": 0.42
-	},
-	{
-		"cardName": "The Coming Storm",
-		"cardValue": 2.2
-	},
-	{
-		"cardName": "Coveted Possession",
-		"cardValue": 0.55
-	},
-	{
-		"cardName": "The Union",
-		"cardValue": 5
-	},
-	{
-		"cardName": "Lucky Connections",
-		"cardValue": 0.71
-	},
-	{
-		"cardName": "The Innocent",
-		"cardValue": 3.5
-	},
-	{
-		"cardName": "Vinia's Token",
-		"cardValue": 0.5
-	},
-	{
-		"cardName": "The Wrath",
-		"cardValue": 3
-	},
-	{
-		"cardName": "No Traces",
-		"cardValue": 1.5
-	},
-	{
-		"cardName": "Lingering Remnants",
-		"cardValue": 2
-	},
-	{
-		"cardName": "Bowyer's Dream",
-		"cardValue": 0.8
-	},
-	{
-		"cardName": "Draped in Dreams",
-		"cardValue": 1
-	},
-	{
-		"cardName": "Emperor of Purity",
-		"cardValue": 0.7
-	},
-	{
-		"cardName": "Immortal Resolve",
-		"cardValue": 0.83
-	},
-	{
-		"cardName": "The Dark Mage",
-		"cardValue": 0.83
-	},
-    {
-		"cardName": "The Mad King",
-		"cardValue": 100
-	},
-	{
-		"cardName": "The Warlord",
-		"cardValue": 0.83
-	},
-	{
-		"cardName": "The Hunger",
-		"cardValue": 12
-	},
-	{
-		"cardName": "Terrible Secret of Space",
-		"cardValue": 0.5
-	},
-    {
-        "cardName": "Fire Of Unknown Origin",
-        "cardValue": 1020
-    },
-    {
-        "cardName": "The Return of the Rat",
-        "cardValue": 1
-    }
+  {
+    "cardName": "Humility",
+    "cardValue": 0.25
+  },
+  {
+    "cardName": "Vanity",
+    "cardValue": 0.55
+  },
+  {
+    "cardName": "The Chains that Bind",
+    "cardValue": 0.33
+  },
+  {
+    "cardName": "Loyalty",
+    "cardValue": 0.2
+  },
+  {
+    "cardName": "The Porcupine",
+    "cardValue": 0.33
+  },
+  {
+    "cardName": "Imperial Legacy",
+    "cardValue": 0.25
+  },
+  {
+    "cardName": "The Celestial Justicar",
+    "cardValue": 0.83
+  },
+  {
+    "cardName": "The Dapper Prodigy",
+    "cardValue": 0.83
+  },
+  {
+    "cardName": "Emperor of Purity",
+    "cardValue": 0.71
+  },
+  {
+    "cardName": "Vinia's Token",
+    "cardValue": 1
+  },
+  {
+    "cardName": "Acclimatisation",
+    "cardValue": 1
+  },
+  {
+    "cardName": "The Primordial",
+    "cardValue": 1.22
+  },
+  {
+    "cardName": "Three Faces in the Dark",
+    "cardValue": 0.42
+  },
+  {
+    "cardName": "The Coming Storm",
+    "cardValue": 2.2
+  },
+  {
+    "cardName": "Coveted Possession",
+    "cardValue": 0.55
+  },
+  {
+    "cardName": "The Union",
+    "cardValue": 5
+  },
+  {
+    "cardName": "Lucky Connections",
+    "cardValue": 0.71
+  },
+  {
+    "cardName": "The Innocent",
+    "cardValue": 3.5
+  },
+  {
+    "cardName": "Vinia's Token",
+    "cardValue": 0.5
+  },
+  {
+    "cardName": "The Wrath",
+    "cardValue": 3
+  },
+  {
+    "cardName": "No Traces",
+    "cardValue": 1.5
+  },
+  {
+    "cardName": "Lingering Remnants",
+    "cardValue": 2
+  },
+  {
+    "cardName": "Bowyer's Dream",
+    "cardValue": 0.8
+  },
+  {
+    "cardName": "Draped in Dreams",
+    "cardValue": 1
+  },
+  {
+    "cardName": "Emperor of Purity",
+    "cardValue": 0.7
+  },
+  {
+    "cardName": "Immortal Resolve",
+    "cardValue": 0.83
+  },
+  {
+    "cardName": "The Dark Mage",
+    "cardValue": 0.83
+  },
+  {
+    "cardName": "The Mad King",
+    "cardValue": 100
+  },
+  {
+    "cardName": "The Warlord",
+    "cardValue": 0.83
+  },
+  {
+    "cardName": "The Hunger",
+    "cardValue": 12
+  },
+  {
+    "cardName": "Terrible Secret of Space",
+    "cardValue": 0.5
+  },
+  {
+    "cardName": "Fire Of Unknown Origin",
+    "cardValue": 1020
+  },
+  {
+    "cardName": "The Return of the Rat",
+    "cardValue": 1
+  },
+  {
+    "cardName": "Merciless Armament",
+    "cardValue": 0.33
+  },
+  {
+    "cardName": "Ngamahu's Flame",
+    "cardValue": 8
+  },
+  {
+    "cardName": "The Enthusiasts",
+    "cardValue": 8
+  },
+  {
+    "cardName": "A Stone Perfected",
+    "cardValue": 5
+  },
+  {
+    "cardName": "Light and Truth",
+    "cardValue": 0.1
+  }
 ]
