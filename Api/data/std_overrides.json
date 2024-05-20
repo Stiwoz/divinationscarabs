@@ -1,7 +1,7 @@
 [
 	{
 		"cardName": "Humility",
-		"cardValue": 0.55
+		"cardValue": 0.25
 	},
 	{
 		"cardName": "Vanity",
@@ -9,7 +9,7 @@
 	},
 	{
 		"cardName": "The Chains that Bind",
-		"cardValue": 0.83
+		"cardValue": 0.33
 	},
 	{
 		"cardName": "Loyalty",
@@ -17,7 +17,7 @@
 	},
 	{
 		"cardName": "The Porcupine",
-		"cardValue": 0.83
+		"cardValue": 0.33
 	},
 	{
 		"cardName": "Imperial Legacy",
@@ -45,7 +45,7 @@
 	},
 	{
 		"cardName": "The Primordial",
-		"cardValue": 4
+		"cardValue": 1.22
 	},
 	{
 		"cardName": "Three Faces in the Dark",
@@ -53,7 +53,7 @@
 	},
 	{
 		"cardName": "The Coming Storm",
-		"cardValue": 4
+		"cardValue": 2.2
 	},
 	{
 		"cardName": "Coveted Possession",
@@ -61,7 +61,7 @@
 	},
 	{
 		"cardName": "The Union",
-		"cardValue": 3
+		"cardValue": 5
 	},
 	{
 		"cardName": "Lucky Connections",
@@ -69,23 +69,19 @@
 	},
 	{
 		"cardName": "The Innocent",
-		"cardValue": 4
+		"cardValue": 3.5
 	},
 	{
 		"cardName": "Vinia's Token",
-		"cardValue": 2
+		"cardValue": 0.5
 	},
 	{
 		"cardName": "The Wrath",
-		"cardValue": 1.16
+		"cardValue": 3
 	},
 	{
 		"cardName": "No Traces",
-		"cardValue": 2.22
-	},
-	{
-		"cardName": "Cursed Words",
-		"cardValue": 2
+		"cardValue": 1.5
 	},
 	{
 		"cardName": "Lingering Remnants",
@@ -111,6 +107,10 @@
 		"cardName": "The Dark Mage",
 		"cardValue": 0.83
 	},
+    {
+		"cardName": "The Mad King",
+		"cardValue": 100
+	},
 	{
 		"cardName": "The Warlord",
 		"cardValue": 0.83
@@ -129,6 +129,6 @@
     },
     {
         "cardName": "The Return of the Rat",
-        "cardValue": 2.66
+        "cardValue": 1
     }
 ]
