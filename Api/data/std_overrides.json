@@ -174,5 +174,41 @@
   {
     "cardName": "The Scout",
     "cardValue": 16
+  },
+  {
+    "cardName": "The Catch",
+    "cardValue": 7
+  },
+  {
+    "cardName": "The Old Man",
+    "cardValue": 7
+  },
+  {
+    "cardName": "The Hive of Knowledge",
+    "cardValue": 4
+  },
+  {
+    "cardName": "Three Faces in the Dark",
+    "cardValue": 0.23
+  },
+  {
+    "cardName": "The Thaumaturgist",
+    "cardValue": 5
+  },
+  {
+    "cardName": "The Saint's Treasure",
+    "cardValue": 4
+  },
+  {
+    "cardName": "The Professor",
+    "cardValue": 4.8
+  },
+  {
+    "cardName": "The Life Thief",
+    "cardValue": 6.66
+  },
+  {
+    "cardName": "Tranquillity",
+    "cardValue": 5.1
   }
 ]
