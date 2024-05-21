@@ -17,7 +17,7 @@
   },
   {
     "cardName": "The Porcupine",
-    "cardValue": 0.33
+    "cardValue": 3.33
   },
   {
     "cardName": "Imperial Legacy",
@@ -170,5 +170,9 @@
   {
     "cardName": "Abitious Obsession",
     "cardValue": 30
+  },
+  {
+    "cardName": "The Scout",
+    "cardValue": 16
   }
 ]
