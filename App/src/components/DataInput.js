@@ -1,4 +1,4 @@
-import { GLOBAL_DROP_RATE } from '../consts/data';
+import { CARD_PRICE_FLOOR_FILTERS, GLOBAL_DROP_RATE } from '../consts/data';
 
 export default function DataInput({
   mapCards,
@@ -68,6 +68,8 @@ export default function DataInput({
         Total StackScarab EV: <code>{totalStackScarabEV.toFixed(2)}</code>
         <br />
         Global drop rate: <code>{GLOBAL_DROP_RATE}</code>
+        <br />
+        Minimum shown card value: <code>{CARD_PRICE_FLOOR_FILTERS[league]}</code>
       </form>
     </>
   );
