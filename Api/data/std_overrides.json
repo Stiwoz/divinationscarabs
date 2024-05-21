@@ -150,5 +150,13 @@
   {
     "cardName": "Light and Truth",
     "cardValue": 0.1
+  },
+  {
+    "cardName": "The Tinkerer's Table",
+    "cardValue": 2
+  },
+  {
+    "cardName": "The Enlightened",
+    "cardValue": 25
   }
 ]

@@ -49,6 +49,10 @@ def update_prices_json():
                 isDisabled = True
                 break
         
+        if updatedCard['detailsId'] == 'the-mad-king':
+            # Override for The Mad King because poe ninja is very confused about it
+            isDisabled = False
+        
         updatedCard['disabled'] = isDisabled
         updatedList.append(updatedCard)
 
