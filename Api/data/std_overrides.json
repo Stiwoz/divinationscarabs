@@ -145,7 +145,7 @@
   },
   {
     "cardName": "A Stone Perfected",
-    "cardValue": 5
+    "cardValue": 3
   },
   {
     "cardName": "Light and Truth",
@@ -158,5 +158,9 @@
   {
     "cardName": "The Enlightened",
     "cardValue": 25
+  },
+  {
+    "cardName": "The Soul",
+    "cardValue": 58
   }
 ]
