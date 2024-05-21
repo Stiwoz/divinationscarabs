@@ -49,7 +49,7 @@ def update_prices_json():
                 isDisabled = True
                 break
         
-        if updatedCard['detailsId'] == 'the-mad-king':
+        if updatedCard['name'] == 'The Mad King':
             # Override for The Mad King because poe ninja is very confused about it
             isDisabled = False
         
