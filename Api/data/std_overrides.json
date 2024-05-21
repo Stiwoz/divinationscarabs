@@ -17,7 +17,7 @@
   },
   {
     "cardName": "The Porcupine",
-    "cardValue": 3.33
+    "cardValue": 0.33
   },
   {
     "cardName": "Imperial Legacy",
@@ -85,7 +85,7 @@
   },
   {
     "cardName": "Lingering Remnants",
-    "cardValue": 2
+    "cardValue": 0.33
   },
   {
     "cardName": "Bowyer's Dream",
@@ -153,7 +153,7 @@
   },
   {
     "cardName": "The Tinkerer's Table",
-    "cardValue": 2
+    "cardValue": 0.33
   },
   {
     "cardName": "The Enlightened",
@@ -238,5 +238,13 @@
   {
     "cardName": "From Bone to Ashes",
     "cardValue": 0.33
+  },
+  {
+    "cardName": "Her Mask",
+    "cardValue": 0.05
+  },
+  {
+    "cardName": "Peaceful Moments",
+    "cardValue": 0.66
   }
 ]

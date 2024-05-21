@@ -114,7 +114,7 @@ if __name__ == "__main__":
     for card_id in range(len(t_name_array)):
         number_of_stacks = int(card_count_constant*t_weight_array[card_id]/t_stack_array[card_id])+1
         feel_the_weight_string += str(number_of_stacks) + " c"+str(card_id) + " + "
-    out.write(feel_the_weight_string[:-3] + " <= 60\n")
+    out.write(feel_the_weight_string[:-3] + " <= 120\n")
             
     # make all parameters binary and close
     out.write("Binary\n")
