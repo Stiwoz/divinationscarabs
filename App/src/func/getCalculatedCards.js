@@ -1,7 +1,7 @@
 import calculateCardEV from './calculateCardEV';
 import isCardInArea from './isCardInArea';
 import {
-  CARD_PRICE_FLOOR_FILTER,
+  CARD_PRICE_FLOOR_FILTERS,
   CARD_WEIGHT_FLOOR_FILTER,
   FORCE_REMOVE_V_FILTER,
   FORCE_SHOW_FILTER,
@@ -34,11 +34,12 @@ export default function getCalculatedCards(
     (1 / (cardWeightBaseline / currentTotalWeight)) * realCardRate.number;
 
   const priceLabel =
-    league.toLowerCase() === 'standard' ? 'standardPrice' : 'price';
+        league.toLowerCase() === 'standard' ? 'standardPrice' : 'price';
+const priceFloor = CARD_PRICE_FLOOR_FILTERS[league.toLowerCase()];
   // filter all cards based on various conditions
   const filteredCards = mapCards.filter(
     (card) =>
-      (card[priceLabel] >= CARD_PRICE_FLOOR_FILTER &&
+      (card[priceLabel] >= priceFloor &&
         !FORCE_REMOVE_V_FILTER.has(card.name) &&
         card.weight !== undefined &&
         card.weight > CARD_WEIGHT_FLOOR_FILTER) ||

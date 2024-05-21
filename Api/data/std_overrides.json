@@ -77,7 +77,7 @@
   },
   {
     "cardName": "The Wrath",
-    "cardValue": 3
+    "cardValue": 1.1
   },
   {
     "cardName": "No Traces",
@@ -181,7 +181,7 @@
   },
   {
     "cardName": "The Old Man",
-    "cardValue": 7
+    "cardValue": 48
   },
   {
     "cardName": "The Hive of Knowledge",
@@ -214,5 +214,29 @@
   {
     "cardName": "Mawr Blaidd",
     "cardValue": 2.7
+  },
+  {
+    "cardName": "Baited Expectations",
+    "cardValue": 0.23
+  },
+  {
+    "cardName": "The Shepherd's Sandals",
+    "cardValue": 0.2
+  },
+  {
+    "cardName": "The Forgotten Treasure",
+    "cardValue": 3.7
+  },
+  {
+    "cardName": "The Tumbleweed",
+    "cardValue": 4.8
+  },
+  {
+    "cardName": "Further Invention",
+    "cardValue": 1.33
+  },
+  {
+    "cardName": "From Bone to Ashes",
+    "cardValue": 0.33
   }
 ]

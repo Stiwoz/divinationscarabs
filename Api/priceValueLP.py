@@ -109,11 +109,12 @@ if __name__ == "__main__":
 
     # constraint, total stacks of cards generated has to be carried out in 6 portals
     # 6 portals of 60 slots is 360 stacks total
+    # overrode to be less than an inventory or so
     feel_the_weight_string = "six_portals: "
     for card_id in range(len(t_name_array)):
         number_of_stacks = int(card_count_constant*t_weight_array[card_id]/t_stack_array[card_id])+1
         feel_the_weight_string += str(number_of_stacks) + " c"+str(card_id) + " + "
-    out.write(feel_the_weight_string[:-3] + " <= 390\n")
+    out.write(feel_the_weight_string[:-3] + " <= 90\n")
             
     # make all parameters binary and close
     out.write("Binary\n")
